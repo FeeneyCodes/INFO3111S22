@@ -1,0 +1,9 @@
+[user]
+email = feeneycodes@google.com
+name = feeneycodes
+ 
+[github]
+user = “feeneycodes”
+ 
+[core]
+sshCommand = “ssh -i ~/.ssh/feeneycodeskey”
