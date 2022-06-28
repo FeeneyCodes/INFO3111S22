@@ -129,12 +129,13 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
 //        mat4x4_identity(m);
-        glm::mat4x4(1.0f);
+        m = glm::mat4x4(1.0f);
 
 //        mat4x4_rotate_Z(m, m, (float)glfwGetTime());
         glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
                                         (float)glfwGetTime(),
-                                        glm::vec3(0.0f, 0.0, 1.0f));        
+                                        glm::vec3(0.0f, 0.0, 1.0f));     
+
         
 //        mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
         p = glm::perspective(0.6f,
