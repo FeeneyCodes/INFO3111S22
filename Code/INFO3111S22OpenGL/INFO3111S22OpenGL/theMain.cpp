@@ -20,11 +20,16 @@ static const struct
 {
     float x, y;
     float r, g, b;
-} vertices[3] =
+} vertices[6] =
 {
+    /* triangle #1 */
     { -0.6f, -0.4f, 1.f, 0.f, 0.f },
     {  0.6f, -0.4f, 0.f, 1.f, 0.f },
-    {   0.f,  0.6f, 0.f, 0.f, 1.f }
+    {   0.f,  0.6f, 0.f, 0.f, 1.f },
+    /* triangle #2 */
+    { -0.6f + 1.0f, -0.4f, 1.f, 0.f, 0.f },
+    {  0.6f + 1.0f, -0.4f, 0.f, 1.f, 0.f },
+    {  0.0f + 1.0f,  0.6f, 0.f, 0.f, 1.f }
 };
 
 static const char* vertex_shader_text =
@@ -47,6 +52,24 @@ static const char* fragment_shader_text =
 "    gl_FragColor = vec4(color, 1.0);\n"
 "}\n";
 
+//// Camera
+//float camera_X = 0.0f;
+//float camera_Y = 0.0f;
+//float camera_Z = 0.0f;
+//
+//class cVector
+//{
+//public:
+//    float X = 0.0f;
+//    float Y = 0.0f; 
+//    float Z = 0.0f;
+//};
+//
+//cVector cameraLocation;
+
+glm::vec3 g_cameraEye = glm::vec3(0.0, 0.0, -4.0f);
+
+
 static void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error: %s\n", description);
@@ -55,7 +78,46 @@ static void error_callback(int error, const char* description)
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
+    // WASD - movement 
+    // A = left
+    // D = right
+    // W = forward
+    // S = backward
+    // Q = down
+    // E = up
+
+    const float cameraMovementSpeed = 0.1f;
+
+    if ( key == GLFW_KEY_A )
+    {
+        ::g_cameraEye.x -= cameraMovementSpeed;     // "left"
+    }
+    if ( key == GLFW_KEY_D )
+    {
+        ::g_cameraEye.x += cameraMovementSpeed;     // "right"
+    }
+
+    if ( key == GLFW_KEY_Q )
+    {
+        ::g_cameraEye.y -= cameraMovementSpeed;     // "down"
+    }
+    if ( key == GLFW_KEY_E )
+    {
+        ::g_cameraEye.y += cameraMovementSpeed;     // "up"
+    }
+
+    if ( key == GLFW_KEY_W )
+    {
+        ::g_cameraEye.z += cameraMovementSpeed;     // "forward"
+    }
+    if ( key == GLFW_KEY_S )
+    {
+        ::g_cameraEye.z -= cameraMovementSpeed;     // "backwards"
+    }
+
 }
 
 int main(void)
@@ -66,8 +128,11 @@ int main(void)
 
     glfwSetErrorCallback(error_callback);
 
-    if (!glfwInit())
-        exit(EXIT_FAILURE);
+    if ( ! glfwInit() )
+    {
+        //exit(EXIT_FAILURE);
+        return -1;
+    }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
@@ -115,7 +180,7 @@ int main(void)
     glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
         sizeof(vertices[0]), (void*)(sizeof(float) * 2));
 
-    while (!glfwWindowShouldClose(window))
+    while ( ! glfwWindowShouldClose(window) )
     {
         float ratio;
         int width, height;
@@ -146,11 +211,12 @@ int main(void)
 //        mat4x4_mul(mvp, p, m);
         glm::mat4x4 v = glm::mat4(1.0f);
 
-        glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0f);
+//        glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0f);
         glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
-        v = glm::lookAt(cameraEye,
+        v = glm::lookAt(
+            ::g_cameraEye,
             cameraTarget,
             upVector);
 
@@ -160,7 +226,9 @@ int main(void)
         glUseProgram(program);
 //        glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*)mvp);
         glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -169,5 +237,6 @@ int main(void)
     glfwDestroyWindow(window);
 
     glfwTerminate();
-    exit(EXIT_SUCCESS);
+    //exit(EXIT_SUCCESS);
+    return 0;
 }
