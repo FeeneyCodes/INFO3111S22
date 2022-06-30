@@ -1,8 +1,9 @@
 // This is from here: https://www.glfw.org/docs/latest/quick.html
 
-#include <glad/glad.h>
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
+#include "globalStuff.h"
+//#include <glad/glad.h>
+//#define GLFW_INCLUDE_NONE
+//#include <GLFW/glfw3.h>
 
 //#include "linmath.h"
 #include <glm/glm.hpp>
@@ -15,6 +16,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
+#include <sstream>  // String Stream
 
 static const struct
 {
@@ -232,6 +235,16 @@ int main(void)
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+
+        // Change the title of the window to show the camera location
+        std::stringstream ssTitle;
+        ssTitle << "Camera (x,y,z): "               // just like cout or fstream, etc.
+            << ::g_cameraEye.x << ", "
+            << ::g_cameraEye.y << ", "
+            << ::g_cameraEye.z;
+//        glfwSetWindowTitle(window, "Hello!");
+        glfwSetWindowTitle( window, ssTitle.str().c_str() );
+
     }
 
     glfwDestroyWindow(window);

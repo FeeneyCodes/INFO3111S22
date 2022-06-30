@@ -137,8 +137,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cShader.cpp" />
+    <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="theMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="globalStuff.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
