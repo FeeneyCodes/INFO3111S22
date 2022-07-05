@@ -46,15 +46,14 @@ struct sVertex
 sVertex vertices[6] =
 {
     /* triangle #1 */
-    { -0.6f, -0.4f, 0.f, 0.f, 1.f },
-    {  0.6f, -0.4f, 0.f, 1.f, 0.f },
-    {   0.f,  0.6f, 1.f, 0.f, 0.f },
+    { -0.6f, -0.4f, 0.0f, 0.0f, 1.0f },
+    {  0.6f, -0.4f, 0.0f, 1.0f, 0.0f },
+    {   0.f,  0.6f, 1.0f, 0.0f, 0.0f },
     /* triangle #2 */
-    { -0.6f + 1.0f, -0.4f, 1.f, 0.f, 0.f },
-    {  0.6f + 1.0f, -0.4f, 0.f, 1.f, 0.f },
-    {  0.0f + 1.0f,  0.6f, 0.f, 0.f, 1.f }
+    {  0.9f, -0.4f, 0.0f, 1.0f, 0.0f },
+    { -0.3f, -0.4f, 0.0f, 1.0f, 0.0f },
+    {  0.2f,  0.6f, 0.0f, 1.0f, 1.0f }
 };
-
 //static const char* vertex_shader_text =
 //"#version 110\n"
 //"uniform mat4 MVP;\n"
@@ -75,6 +74,7 @@ sVertex vertices[6] =
 //"    gl_FragColor = vec4(color, 1.0);\n"
 //"}\n";
 
+
 //// Camera
 //float camera_X = 0.0f;
 //float camera_Y = 0.0f;
@@ -90,7 +90,7 @@ sVertex vertices[6] =
 //
 //cVector cameraLocation;
 
-glm::vec3 g_cameraEye = glm::vec3(0.0, 0.0, -4.0f);
+glm::vec3 g_cameraEye = glm::vec3(0.0, 0.0, +40.0f);
 
 
 static void error_callback(int error, const char* description)
