@@ -152,20 +152,94 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned int &numberOfVerticesLoaded)
 {
-    // Amazing code here
-    numberOfVerticesLoaded = 6;
+    std::ifstream thePlyFile(fileName.c_str());
+    if ( ! thePlyFile.is_open() )
+    {
+        return false;
+    }
+
+    std::string token;
+    while (thePlyFile >> token)
+    {
+        if (token == "vertex")
+        {
+            break;
+        }
+    }
+    // The next thing is the number of vertices.
+    thePlyFile >> numberOfVerticesLoaded;
+
     // Allocate the array on the heap...
     pVertices = new sVertex[numberOfVerticesLoaded];
 
-    /* triangle #1 */
-    // -0.09 to 0.06 in the x axis
-    pVertices[0] = { -0.6f, -0.4f, 0.0f, 0.0f, 1.0f };
-    pVertices[1] = {  0.6f, -0.4f, 0.0f, 1.0f, 0.0f };
-    pVertices[2] = {   0.f,  0.6f, 1.0f, 0.0f, 0.0f };
-    /* triangle #2 */
-    pVertices[3] = {  0.9f, -0.4f, 0.0f, 1.0f, 0.0f };
-    pVertices[4] = { -0.3f, -0.4f, 0.0f, 1.0f, 0.0f };
-    pVertices[5] = {  0.2f,  0.6f, 0.0f, 1.0f, 1.0f };
+
+    while (thePlyFile >> token)
+    {
+        if (token == "face")
+        {
+            break;
+        }
+    }
+    // Next is the number of "Faces" (aka "triangles")
+    unsigned int numberOfTriangles = 0;
+    thePlyFile >> numberOfTriangles;
+
+
+    while (thePlyFile >> token)
+    {
+        if (token == "end_header")
+        {
+            break;
+        }
+    }
+
+    // This particular ply file (the O.G. bunny one has this header:
+    //   ply
+    //   format ascii 1.0
+    //   comment zipper output
+    //   element vertex 1889
+    //   property float x
+    //   property float y
+    //   property float z
+    //   property float confidence
+    //   property float intensity
+    //   element face 3851
+    //   property list uchar int vertex_indices
+    //   end_header
+    for (unsigned int count = 0; count != numberOfVerticesLoaded; count++)
+    {
+        // -0.036872 0.127727 0.00440925 0.850855 0.5 
+        float discardThisValue = 0.0f;
+        thePlyFile
+            >> pVertices[count].x
+            >> pVertices[count].y
+            >> discardThisValue     // Z
+            >> discardThisValue     // confidence
+            >> discardThisValue;    // intensity
+
+        pVertices[count].r = 1.0f;
+        pVertices[count].g = 1.0f;
+        pVertices[count].b = 1.0f;
+
+    }
+
+
+//    // Amazing code here
+//    numberOfVerticesLoaded = 6;
+//    // Allocate the array on the heap...
+//    pVertices = new sVertex[numberOfVerticesLoaded];
+//
+//    /* triangle #1 */
+//    // -0.09 to 0.06 in the x axis
+//    pVertices[0] = { -0.6f, -0.4f, 0.0f, 0.0f, 1.0f };
+//    pVertices[1] = {  0.6f, -0.4f, 0.0f, 1.0f, 0.0f };
+//    pVertices[2] = {   0.f,  0.6f, 1.0f, 0.0f, 0.0f };
+//    /* triangle #2 */
+//    pVertices[3] = {  0.9f, -0.4f, 0.0f, 1.0f, 0.0f };
+//    pVertices[4] = { -0.3f, -0.4f, 0.0f, 1.0f, 0.0f };
+//    pVertices[5] = {  0.2f,  0.6f, 0.0f, 1.0f, 1.0f };
+
+    thePlyFile.close();
 
     return true;
 }
