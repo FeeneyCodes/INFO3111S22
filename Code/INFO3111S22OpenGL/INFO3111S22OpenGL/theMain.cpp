@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <sstream>  // String Stream
+#include <fstream>
 
 #include "cShaderManager.h"
 
@@ -43,17 +44,18 @@ struct sVertex
     float r, g, b;      // vCol
 };
 
-sVertex vertices[6] =
-{
-    /* triangle #1 */
-    { -0.6f, -0.4f, 0.0f, 0.0f, 1.0f },
-    {  0.6f, -0.4f, 0.0f, 1.0f, 0.0f },
-    {   0.f,  0.6f, 1.0f, 0.0f, 0.0f },
-    /* triangle #2 */
-    {  0.9f, -0.4f, 0.0f, 1.0f, 0.0f },
-    { -0.3f, -0.4f, 0.0f, 1.0f, 0.0f },
-    {  0.2f,  0.6f, 0.0f, 1.0f, 1.0f }
-};
+//sVertex vertices[6] =
+//{
+//    /* triangle #1 */
+//    // -0.09 to 0.06 in the x axis
+//    { -0.6f, -0.4f, 0.0f, 0.0f, 1.0f },
+//    {  0.6f, -0.4f, 0.0f, 1.0f, 0.0f },
+//    {   0.f,  0.6f, 1.0f, 0.0f, 0.0f },
+//    /* triangle #2 */
+//    {  0.9f, -0.4f, 0.0f, 1.0f, 0.0f },
+//    { -0.3f, -0.4f, 0.0f, 1.0f, 0.0f },
+//    {  0.2f,  0.6f, 0.0f, 1.0f, 1.0f }
+//};
 //static const char* vertex_shader_text =
 //"#version 110\n"
 //"uniform mat4 MVP;\n"
@@ -90,7 +92,7 @@ sVertex vertices[6] =
 //
 //cVector cameraLocation;
 
-glm::vec3 g_cameraEye = glm::vec3(0.0, 0.0, +40.0f);
+glm::vec3 g_cameraEye = glm::vec3(0.0, 0.0, -4.0f);
 
 
 static void error_callback(int error, const char* description)
@@ -143,6 +145,33 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 }
 
+// Function to load the bunny ply format model
+// "bunny.ply"
+// sVertex* pVertices;
+// unsigned int numberOfVerticesLoaded;
+
+bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned int &numberOfVerticesLoaded)
+{
+    // Amazing code here
+    numberOfVerticesLoaded = 6;
+    // Allocate the array on the heap...
+    pVertices = new sVertex[numberOfVerticesLoaded];
+
+    /* triangle #1 */
+    // -0.09 to 0.06 in the x axis
+    pVertices[0] = { -0.6f, -0.4f, 0.0f, 0.0f, 1.0f };
+    pVertices[1] = {  0.6f, -0.4f, 0.0f, 1.0f, 0.0f };
+    pVertices[2] = {   0.f,  0.6f, 1.0f, 0.0f, 0.0f };
+    /* triangle #2 */
+    pVertices[3] = {  0.9f, -0.4f, 0.0f, 1.0f, 0.0f };
+    pVertices[4] = { -0.3f, -0.4f, 0.0f, 1.0f, 0.0f };
+    pVertices[5] = {  0.2f,  0.6f, 0.0f, 1.0f, 1.0f };
+
+    return true;
+}
+
+
+
 int main(void)
 {
     GLFWwindow* window;
@@ -178,9 +207,25 @@ int main(void)
 
     // NOTE: OpenGL error checks have been omitted for brevity
 
+//    sVertex pVertices[1000000];
+//    sVertex* pVertices = new sVertex[1000000];
+
+    // TODO: Amazing code to load the bunny from file into this array above
+
+    sVertex* pVertices = NULL;      // nullptr
+    unsigned int numberOfVerticesLoaded = 0;
+    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.ply", pVertices, numberOfVerticesLoaded) )
+    {
+        std::cout << "Oh no! Model didn't load!" << std::endl;
+        return -1;
+    }
+
+    unsigned int sizeOfVertexArrayInBytes = sizeof(sVertex) * numberOfVerticesLoaded;
+
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeOfVertexArrayInBytes, pVertices, GL_STATIC_DRAW);
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(pVertices), pVertices, GL_STATIC_DRAW);
 
     // Use the shader manager thingy...
     cShaderManager* pShaderManager = new cShaderManager();
@@ -221,12 +266,20 @@ int main(void)
     vcol_location = glGetAttribLocation(shaderProgramNumber, "vCol");
 
     glEnableVertexAttribArray(vpos_location);
-    glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
-        sizeof(vertices[0]), (void*)0);
+    glVertexAttribPointer(vpos_location, 
+                          2, 
+                          GL_FLOAT, 
+                          GL_FALSE,
+                          sizeof(pVertices[0]),         // sizeof(vertices[0]),
+                          (void*)0);                         
 
     glEnableVertexAttribArray(vcol_location);
-    glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
-        sizeof(vertices[0]), (void*)(sizeof(float) * 2));
+    glVertexAttribPointer(vcol_location, 
+                          3, 
+                          GL_FLOAT, 
+                          GL_FALSE,
+                          sizeof(pVertices[0]),         // sizeof(vertices[0]),
+                          (void*)(sizeof(float) * 2));
 
     while ( ! glfwWindowShouldClose(window) )
     {
@@ -278,7 +331,8 @@ int main(void)
         glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
         // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawArrays(GL_TRIANGLES, 0, numberOfVerticesLoaded);
+//        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
