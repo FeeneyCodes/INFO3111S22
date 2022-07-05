@@ -278,7 +278,7 @@ int main(void)
         glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
         // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
-        glDrawArrays(GL_LINES, 0, 6);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
