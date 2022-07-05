@@ -150,8 +150,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 // sVertex* pVertices;
 // unsigned int numberOfVerticesLoaded;
 
-bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned int &numberOfVerticesLoaded)
+bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned int &numberOfVerticesToDraw)
 {
+    unsigned int numberOfVerticesLoaded = 0;
+
     std::ifstream thePlyFile(fileName.c_str());
     if ( ! thePlyFile.is_open() )
     {
@@ -169,8 +171,8 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
     // The next thing is the number of vertices.
     thePlyFile >> numberOfVerticesLoaded;
 
-    // Allocate the array on the heap...
-    pVertices = new sVertex[numberOfVerticesLoaded];
+ //   // Allocate the array on the heap...
+ //   pVertices = new sVertex[numberOfVerticesLoaded];
 
 
     while (thePlyFile >> token)
@@ -206,20 +208,137 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
     //   element face 3851
     //   property list uchar int vertex_indices
     //   end_header
+
+// The triangles we want to draw are really AFTER the list of vertices.
+// Later we will directly load an indexed model, but for now, the code
+//  we have only handles as single vertex buffer (no "triangle" or 
+//  "element" buffer). But it works, so let's use it, right?
+
+// Here, I'm going to allocate a TEMPORARY array to hold the vertices
+//  AND a temporary triangle ("element") array to hold the triangles. 
+// Then, I'm going to read through the triangles and load the ACTUAL
+//  vertex buffer (array) that the rest of the code will draw.
+
+     //   // Allocate the array on the heap...
+    sVertex* pTEMPVerticesInFile = new sVertex[numberOfVerticesLoaded];
+
     for (unsigned int count = 0; count != numberOfVerticesLoaded; count++)
     {
         // -0.036872 0.127727 0.00440925 0.850855 0.5 
         float discardThisValue = 0.0f;
         thePlyFile
-            >> pVertices[count].x
-            >> pVertices[count].y
+            >> pTEMPVerticesInFile[count].x
+            >> pTEMPVerticesInFile[count].y
             >> discardThisValue     // Z
             >> discardThisValue     // confidence
             >> discardThisValue;    // intensity
 
-        pVertices[count].r = 1.0f;
-        pVertices[count].g = 1.0f;
-        pVertices[count].b = 1.0f;
+        pTEMPVerticesInFile[count].r = 1.0f;
+        pTEMPVerticesInFile[count].g = 1.0f;
+        pTEMPVerticesInFile[count].b = 1.0f;
+
+    }
+
+    // Now we load the triangle ("element") information
+    // (the numbers after the list of vertices)
+    // 
+    // They look like this: 
+    //      3 4812 4936 4891
+    // 
+    // The "3" indicates it's a triangle 
+    // (instead of "1" for a point, "2" for a line, etc.
+    // 
+
+    // Allocate a triangle array
+    struct sTriangle
+    {
+        // These are indexes into the vertex array we loaded earlier
+        unsigned int vertexIndex0;
+        unsigned int vertexIndex1;
+        unsigned int vertexIndex2;
+        // or this maybe?
+        sVertex theVertices[3];
+    };
+
+    sTriangle* pTriangleArrayInFile = new sTriangle[numberOfTriangles];
+
+    for (unsigned int count = 0; count != numberOfTriangles; count++)
+    {
+        // Same as the vertex loading...
+        unsigned int discard = 0;   // For the leading "3"
+        thePlyFile >> discard;
+        
+        thePlyFile
+            >> pTriangleArrayInFile[count].vertexIndex0
+            >> pTriangleArrayInFile[count].vertexIndex1
+            >> pTriangleArrayInFile[count].vertexIndex2;
+    }
+
+    // Now we can "unroll" or "de-index" (Not sure what you'd 
+    //  like to call it) the triangles to get a GIANT list 
+    //  of vertices that the code can draw.
+    //
+    // Remember: this is only because that's the only thing our code
+    //  CAN draw at the moment... (we'll change that)
+
+    // The number of vertices TO DRAW is numberOfTriangles * 3
+    // (3 vertices per triangle, right?)
+
+    numberOfVerticesToDraw = numberOfTriangles * 3;
+
+    pVertices = new sVertex[ numberOfVerticesToDraw ];
+
+    // We'll start this outer index at the start of the array above...
+    unsigned int vertexToDrawIndex = 0;
+
+    for (unsigned int triIndex = 0; triIndex != numberOfTriangles; triIndex++)
+    {
+        // 3 301 358 300 
+
+
+        pVertices[ vertexToDrawIndex + 0 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].x;
+        pVertices[ vertexToDrawIndex + 0 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].y;
+        pVertices[vertexToDrawIndex + 0].r = 1.0f;
+        pVertices[vertexToDrawIndex + 0].g = 1.0f;
+        pVertices[vertexToDrawIndex + 0].b = 1.0f;
+
+        pVertices[ vertexToDrawIndex + 1 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].x;
+        pVertices[ vertexToDrawIndex + 1 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].y;
+        pVertices[vertexToDrawIndex + 1].r = 1.0f;
+        pVertices[vertexToDrawIndex + 1].g = 1.0f;
+        pVertices[vertexToDrawIndex + 1].b = 1.0f;
+
+        pVertices[ vertexToDrawIndex + 2 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].x;
+        pVertices[ vertexToDrawIndex + 2 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].y;
+        pVertices[vertexToDrawIndex + 2].r = 1.0f;
+        pVertices[vertexToDrawIndex + 2].g = 1.0f;
+        pVertices[vertexToDrawIndex + 2].b = 1.0f;
+
+        // Next triangle is 3 vertices later in the array
+        vertexToDrawIndex += 3;
+
+
+
+//        // Here's another way we could have done it...
+//        // 3 301 358 300 
+//        sVertex& triVertex0 = pVertices[vertexToDrawIndex];
+//        unsigned int indexOfVertex0 = pTriangleArrayInFile[triIndex].vertexIndex0;
+//        triVertex0.x = pTEMPVerticesInFile[indexOfVertex0].x;
+//        triVertex0.y = pTEMPVerticesInFile[indexOfVertex0].y;
+//        vertexToDrawIndex++;
+//
+//        sVertex& triVertex1 = pVertices[vertexToDrawIndex];
+//        unsigned int indexOfVertex1 = pTriangleArrayInFile[triIndex].vertexIndex1;
+//        triVertex1.x = pTEMPVerticesInFile[indexOfVertex1].x;
+//        triVertex1.y = pTEMPVerticesInFile[indexOfVertex1].y;
+//        sVertex& triVertex0 = pVertices[vertexToDrawIndex];
+//        vertexToDrawIndex++;
+//
+//        sVertex& triVertex2 = pVertices[vertexToDrawIndex];
+//        unsigned int indexOfVertex2 = pTriangleArrayInFile[triIndex].vertexIndex2;
+//        triVertex2.x = pTEMPVerticesInFile[indexOfVertex2].x;
+//        triVertex2.y = pTEMPVerticesInFile[indexOfVertex2].y;
+//        vertexToDrawIndex++;
 
     }
 
@@ -287,14 +406,14 @@ int main(void)
     // TODO: Amazing code to load the bunny from file into this array above
 
     sVertex* pVertices = NULL;      // nullptr
-    unsigned int numberOfVerticesLoaded = 0;
-    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.ply", pVertices, numberOfVerticesLoaded) )
+    unsigned int numberOfVerticesToDraw = 0;
+    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.ply", pVertices, numberOfVerticesToDraw) )
     {
         std::cout << "Oh no! Model didn't load!" << std::endl;
         return -1;
     }
 
-    unsigned int sizeOfVertexArrayInBytes = sizeof(sVertex) * numberOfVerticesLoaded;
+    unsigned int sizeOfVertexArrayInBytes = sizeof(sVertex) * numberOfVerticesToDraw;
 
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
@@ -366,7 +485,15 @@ int main(void)
         ratio = width / (float)height;
 
         glViewport(0, 0, width, height);
-        glClear(GL_COLOR_BUFFER_BIT);
+//        glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.0f, 0.3f, 1.0f, 1.0f);       // Clear screen to blue colour
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // This turns this on and off
+        glEnable(GL_DEPTH_TEST);
+
+        // Remove "back facing" triangles (just doesn't draw them)
+        glCullFace(GL_BACK);
 
 //        mat4x4_identity(m);
         m = glm::mat4x4(1.0f);
@@ -405,7 +532,7 @@ int main(void)
         glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
         // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
-        glDrawArrays(GL_TRIANGLES, 0, numberOfVerticesLoaded);
+        glDrawArrays(GL_TRIANGLES, 0, numberOfVerticesToDraw);
 //        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
