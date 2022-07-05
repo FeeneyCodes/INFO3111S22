@@ -224,14 +224,14 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
 
     for (unsigned int count = 0; count != numberOfVerticesLoaded; count++)
     {
-        // -0.036872 0.127727 0.00440925 0.850855 0.5 
+        // -0.036872 0.127727 0.00440925 // DON'T NEED THIS: 0.850855 0.5 
         float discardThisValue = 0.0f;
         thePlyFile
             >> pTEMPVerticesInFile[count].x
             >> pTEMPVerticesInFile[count].y
-            >> discardThisValue     // Z
-            >> discardThisValue     // confidence
-            >> discardThisValue;    // intensity
+            >> discardThisValue;     // Z
+//            >> discardThisValue     // confidence
+//            >> discardThisValue;    // intensity
 
         pTEMPVerticesInFile[count].r = 1.0f;
         pTEMPVerticesInFile[count].g = 1.0f;
@@ -407,7 +407,9 @@ int main(void)
 
     sVertex* pVertices = NULL;      // nullptr
     unsigned int numberOfVerticesToDraw = 0;
-    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.ply", pVertices, numberOfVerticesToDraw) )
+//    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.ply", pVertices, numberOfVerticesToDraw) )
+    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.xyz.ply", pVertices, numberOfVerticesToDraw) )
+//    if ( ! LoadPlyModelFromFile("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", pVertices, numberOfVerticesToDraw) )
     {
         std::cout << "Oh no! Model didn't load!" << std::endl;
         return -1;
@@ -489,11 +491,6 @@ int main(void)
         glClearColor(0.0f, 0.3f, 1.0f, 1.0f);       // Clear screen to blue colour
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // This turns this on and off
-        glEnable(GL_DEPTH_TEST);
-
-        // Remove "back facing" triangles (just doesn't draw them)
-        glCullFace(GL_BACK);
 
 //        mat4x4_identity(m);
         m = glm::mat4x4(1.0f);
@@ -530,6 +527,18 @@ int main(void)
 
 //        glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*)mvp);
         glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
+
+
+        // This turns this on and off
+        glEnable(GL_DEPTH_TEST);
+
+        // Remove "back facing" triangles (just doesn't draw them)
+        glCullFace(GL_BACK);
+
+
+        // Change the polygon mode (i.e. how the triangles are filled in)
+        // GL_POINT, GL_LINE, and GL_FILL
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
         glDrawArrays(GL_TRIANGLES, 0, numberOfVerticesToDraw);
