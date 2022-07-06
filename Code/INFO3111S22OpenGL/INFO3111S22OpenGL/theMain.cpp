@@ -40,7 +40,7 @@
 
 struct sVertex
 {
-    float x, y;         // vPos
+    float x, y, z;      // vPos  NOW WITH MORE Z!
     float r, g, b;      // vCol
 };
 
@@ -229,7 +229,8 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
         thePlyFile
             >> pTEMPVerticesInFile[count].x
             >> pTEMPVerticesInFile[count].y
-            >> discardThisValue;     // Z
+            >> pTEMPVerticesInFile[count].z;
+//            >> discardThisValue;     // Z
 //            >> discardThisValue     // confidence
 //            >> discardThisValue;    // intensity
 
@@ -298,18 +299,21 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
 
         pVertices[ vertexToDrawIndex + 0 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].x;
         pVertices[ vertexToDrawIndex + 0 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].y;
+        pVertices[ vertexToDrawIndex + 0 ].z = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].z;
         pVertices[vertexToDrawIndex + 0].r = 1.0f;
         pVertices[vertexToDrawIndex + 0].g = 1.0f;
         pVertices[vertexToDrawIndex + 0].b = 1.0f;
 
         pVertices[ vertexToDrawIndex + 1 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].x;
         pVertices[ vertexToDrawIndex + 1 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].y;
+        pVertices[ vertexToDrawIndex + 1 ].z = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].z;
         pVertices[vertexToDrawIndex + 1].r = 1.0f;
         pVertices[vertexToDrawIndex + 1].g = 1.0f;
         pVertices[vertexToDrawIndex + 1].b = 1.0f;
 
         pVertices[ vertexToDrawIndex + 2 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].x;
         pVertices[ vertexToDrawIndex + 2 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].y;
+        pVertices[ vertexToDrawIndex + 2 ].z = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].z;
         pVertices[vertexToDrawIndex + 2].r = 1.0f;
         pVertices[vertexToDrawIndex + 2].g = 1.0f;
         pVertices[vertexToDrawIndex + 2].b = 1.0f;
@@ -408,8 +412,8 @@ int main(void)
     sVertex* pVertices = NULL;      // nullptr
     unsigned int numberOfVerticesToDraw = 0;
 //    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.ply", pVertices, numberOfVerticesToDraw) )
-    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.xyz.ply", pVertices, numberOfVerticesToDraw) )
-//    if ( ! LoadPlyModelFromFile("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", pVertices, numberOfVerticesToDraw) )
+//    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.xyz.ply", pVertices, numberOfVerticesToDraw) )
+    if ( ! LoadPlyModelFromFile("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", pVertices, numberOfVerticesToDraw) )
     {
         std::cout << "Oh no! Model didn't load!" << std::endl;
         return -1;
@@ -457,24 +461,31 @@ int main(void)
     //glLinkProgram(program);
 
     mvp_location = glGetUniformLocation(shaderProgramNumber, "MVP");
+
+//    struct sVertex
+//    {
+//        float x, y, z;      // vPos  NOW WITH MORE Z!
+//        float r, g, b;      // vCol
+//    };
+
     vpos_location = glGetAttribLocation(shaderProgramNumber, "vPos");
     vcol_location = glGetAttribLocation(shaderProgramNumber, "vCol");
 
     glEnableVertexAttribArray(vpos_location);
-    glVertexAttribPointer(vpos_location, 
-                          2, 
-                          GL_FLOAT, 
+    glVertexAttribPointer(vpos_location,
+                          3,            // 2,   3 because there's also an z
+                          GL_FLOAT,
                           GL_FALSE,
-                          sizeof(pVertices[0]),         // sizeof(vertices[0]),
-                          (void*)0);                         
+                          sizeof(sVertex),      //sizeof(pVertices[0]),         // sizeof(vertices[0]),
+                          (void*)offsetof(sVertex, x));    // (void*)0);
 
     glEnableVertexAttribArray(vcol_location);
     glVertexAttribPointer(vcol_location, 
                           3, 
                           GL_FLOAT, 
                           GL_FALSE,
-                          sizeof(pVertices[0]),         // sizeof(vertices[0]),
-                          (void*)(sizeof(float) * 2));
+                          sizeof(sVertex),      //sizeof(pVertices[0]),         // sizeof(vertices[0]),
+                          (void*)offsetof(sVertex, r));    //(void*)(sizeof(float) * 2));
 
     while ( ! glfwWindowShouldClose(window) )
     {

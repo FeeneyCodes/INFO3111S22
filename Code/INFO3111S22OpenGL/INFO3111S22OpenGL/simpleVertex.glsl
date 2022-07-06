@@ -2,18 +2,18 @@
 
 uniform mat4 MVP;
 
-in vec2 vPos;
+in vec3 vPos;	// vec2 = x,y  vec3 = x,y,z
 in vec3 vCol;
 
 out vec3 color;
 
 void main()
 {
-    vec2 vFinalPosition = vPos;
+    vec3 vFinalPosition = vPos;
 
 //    vFinalPosition.x -= 1.75f;
 
-    gl_Position = MVP * vec4(vFinalPosition, 0.0, 1.0);
+    gl_Position = MVP * vec4(vFinalPosition, 1.0);
 
     color = vCol;
 }
