@@ -40,6 +40,9 @@
     <ClInclude Include="cVAOManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="simpleFragment.glsl">

@@ -89,7 +89,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 // sVertex* pVertices;
 // unsigned int numberOfVerticesLoaded;
 
-
+// See globalStuff.h for declaration
+std::vector< cMesh* > g_vec_pMeshesToDraw;
 
 
 int main(void)
@@ -251,6 +252,22 @@ int main(void)
     pVAOManager->LoadModelIntoVAO("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", spiderDrawInfo, shaderProgramNumber);
 
 
+    // Add these objects to the scene we are going to draw
+    cMesh* pBunny = new cMesh();
+    pBunny->meshFileName = "assets/models/bun_zipper.xyz.ply";
+    ::g_vec_pMeshesToDraw.push_back(pBunny);
+
+    cMesh* pCow = new cMesh();
+    pCow->meshFileName = "assets/models/cow_xyz_only.ply";
+    ::g_vec_pMeshesToDraw.push_back(pCow);
+
+    cMesh* pSpider = new cMesh();
+    pSpider->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply";
+    ::g_vec_pMeshesToDraw.push_back(pSpider);
+
+
+
+
     while ( ! glfwWindowShouldClose(window) )
     {
         float ratio;
@@ -319,15 +336,23 @@ int main(void)
 //        glDrawArrays(GL_TRIANGLES, 0, numberOfCowVerticesToDraw);
 //        glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        sModelDrawInfo modelDrawingInfo;
-        if ( pVAOManager->FindDrawInfoByModelName("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", modelDrawingInfo) )
+        // Loop through the mesh objects in the scene, drawing each one
+        for (unsigned int index = 0; index != ::g_vec_pMeshesToDraw.size(); index++)
         {
-            // enable VAO(and everything else)
-            glBindVertexArray(modelDrawingInfo.VAO_ID);
-            glDrawElements(GL_TRIANGLES, modelDrawingInfo.numberOfIndices, GL_UNSIGNED_INT, (void*)0);
-            //disable VAO(and everything else)
-            glBindVertexArray(0); 			
-        }
+            sModelDrawInfo modelDrawingInfo;
+            cMesh* pCurrentMesh = ::g_vec_pMeshesToDraw[index];
+
+            if ( pVAOManager->FindDrawInfoByModelName(pCurrentMesh->meshFileName, modelDrawingInfo) )
+            {
+                // enable VAO(and everything else)
+                glBindVertexArray(modelDrawingInfo.VAO_ID);
+                glDrawElements(GL_TRIANGLES, modelDrawingInfo.numberOfIndices, GL_UNSIGNED_INT, (void*)0);
+                //disable VAO(and everything else)
+                glBindVertexArray(0); 			
+            }
+            
+        }//for (unsigned int index = 0
+
 
 
         glfwSwapBuffers(window);

@@ -1,6 +1,7 @@
 #include "cShaderManager.h"
 #include "globalStuff.h"		// glfw.h, etc. (openGL.h)
 
+
 cShaderManager::cShader::cShader()
 {
 	this->ID = 0;
