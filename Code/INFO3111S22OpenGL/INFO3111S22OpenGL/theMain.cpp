@@ -234,12 +234,12 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
 //            >> discardThisValue     // confidence
 //            >> discardThisValue;    // intensity
 
-        unsigned int red, green, blue, alpha;
-        thePlyFile >> red >> green >> blue >> alpha; 
+  //      unsigned int red, green, blue, alpha;
+  //      thePlyFile >> red >> green >> blue >> alpha; 
 
-        pTEMPVerticesInFile[count].r = (float)red/255.0f;
-        pTEMPVerticesInFile[count].g = (float)green/255.0f;
-        pTEMPVerticesInFile[count].b = (float)blue/255.0f;
+  //      pTEMPVerticesInFile[count].r = (float)red/255.0f;
+  //      pTEMPVerticesInFile[count].g = (float)green/255.0f;
+  //      pTEMPVerticesInFile[count].b = (float)blue/255.0f;
 
     }
 
@@ -303,23 +303,23 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
         pVertices[ vertexToDrawIndex + 0 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].x;
         pVertices[ vertexToDrawIndex + 0 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].y;
         pVertices[ vertexToDrawIndex + 0 ].z = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].z;
-        pVertices[vertexToDrawIndex + 0].r = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex0].r;
-        pVertices[vertexToDrawIndex + 0].g = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex0].g;
-        pVertices[vertexToDrawIndex + 0].b = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex0].b;
+        pVertices[vertexToDrawIndex + 0].r = 1.0f;
+        pVertices[vertexToDrawIndex + 0].g = 1.0f;
+        pVertices[vertexToDrawIndex + 0].b = 1.0f;
 
         pVertices[ vertexToDrawIndex + 1 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].x;
         pVertices[ vertexToDrawIndex + 1 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].y;
         pVertices[ vertexToDrawIndex + 1 ].z = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].z;
-        pVertices[vertexToDrawIndex + 1].r = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex1].r;
-        pVertices[vertexToDrawIndex + 1].g = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex1].g;
-        pVertices[vertexToDrawIndex + 1].b = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex1].b;
+        pVertices[vertexToDrawIndex + 1].r = 1.0f;
+        pVertices[vertexToDrawIndex + 1].g = 1.0f;
+        pVertices[vertexToDrawIndex + 1].b = 1.0f;
 
         pVertices[ vertexToDrawIndex + 2 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].x;
         pVertices[ vertexToDrawIndex + 2 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].y;
         pVertices[ vertexToDrawIndex + 2 ].z = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].z;
-        pVertices[vertexToDrawIndex + 2].r = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex2].r;
-        pVertices[vertexToDrawIndex + 2].g = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex2].g;
-        pVertices[vertexToDrawIndex + 2].b = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex2].b;
+        pVertices[vertexToDrawIndex + 2].r = 1.0f;
+        pVertices[vertexToDrawIndex + 2].g = 1.0f;
+        pVertices[vertexToDrawIndex + 2].b = 1.0f;
 
         // Next triangle is 3 vertices later in the array
         vertexToDrawIndex += 3;
@@ -375,7 +375,8 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
 int main(void)
 {
     GLFWwindow* window;
-    GLuint vertex_buffer;
+    GLuint vertex_buffer_for_cow;
+    GLuint vertex_buffer_for_spider;
     //GLuint vertex_shader;
     //GLuint fragment_shader;
     GLuint shaderProgramNumber = 0;     
@@ -412,23 +413,46 @@ int main(void)
 
     // TODO: Amazing code to load the bunny from file into this array above
 
-    sVertex* pVertices = NULL;      // nullptr
-    unsigned int numberOfVerticesToDraw = 0;
-//    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.ply", pVertices, numberOfVerticesToDraw) )
-//    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.xyz.ply", pVertices, numberOfVerticesToDraw) )
-//    if ( ! LoadPlyModelFromFile("assets/models/cow_xyz_only.ply", pVertices, numberOfVerticesToDraw) )
-    if ( ! LoadPlyModelFromFile("assets/models/cow_xyz_rgba.ply", pVertices, numberOfVerticesToDraw) )
+    // START OF: Loading the cow
+    sVertex* pCowVertices = NULL;      // nullptr
+    unsigned int numberOfCowVerticesToDraw = 0;
+    if ( ! LoadPlyModelFromFile("assets/models/cow_xyz_only.ply", pCowVertices, numberOfCowVerticesToDraw) )
     {
         std::cout << "Oh no! Model didn't load!" << std::endl;
         return -1;
     }
 
-    unsigned int sizeOfVertexArrayInBytes = sizeof(sVertex) * numberOfVerticesToDraw;
+    unsigned int sizeOfCowVertexArrayInBytes = sizeof(sVertex) * numberOfCowVerticesToDraw;
 
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeOfVertexArrayInBytes, pVertices, GL_STATIC_DRAW);
+    glGenBuffers(1, &vertex_buffer_for_cow);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_for_cow);
+    glBufferData(GL_ARRAY_BUFFER, sizeOfCowVertexArrayInBytes, pCowVertices, GL_STATIC_DRAW);
 //    glBufferData(GL_ARRAY_BUFFER, sizeof(pVertices), pVertices, GL_STATIC_DRAW);
+
+    delete [] pCowVertices;
+    // END OF: Loading the cow
+
+//    spider_mastermind.bmd6model.fbx.ascii.xyz.ply
+    // START OF: Loading the spider
+    sVertex* pSpiderVertices = NULL;      // nullptr
+    unsigned int numberOfSpiderVerticesToDraw = 0;
+    if (!LoadPlyModelFromFile("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", pSpiderVertices, numberOfSpiderVerticesToDraw))
+    {
+        std::cout << "Oh no! Model didn't load!" << std::endl;
+        return -1;
+    }
+
+    unsigned int sizeOfSpiderVertexArrayInBytes = sizeof(sVertex) * numberOfSpiderVerticesToDraw;
+
+    glGenBuffers(1, &vertex_buffer_for_spider);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_for_spider);
+    glBufferData(GL_ARRAY_BUFFER, sizeOfSpiderVertexArrayInBytes, pSpiderVertices, GL_STATIC_DRAW);
+    //    glBufferData(GL_ARRAY_BUFFER, sizeof(pVertices), pVertices, GL_STATIC_DRAW);
+
+    delete[] pSpiderVertices;
+    // END OF: Loading the spider
+
+
 
     // Use the shader manager thingy...
     cShaderManager* pShaderManager = new cShaderManager();
@@ -484,9 +508,9 @@ int main(void)
                           (void*)offsetof(sVertex, x));    // (void*)0);
 
     glEnableVertexAttribArray(vcol_location);
-    glVertexAttribPointer(vcol_location, 
-                          3, 
-                          GL_FLOAT, 
+    glVertexAttribPointer(vcol_location,
+                          3,
+                          GL_FLOAT,
                           GL_FALSE,
                           sizeof(sVertex),      //sizeof(pVertices[0]),         // sizeof(vertices[0]),
                           (void*)offsetof(sVertex, r));    //(void*)(sizeof(float) * 2));
@@ -553,10 +577,10 @@ int main(void)
 
         // Change the polygon mode (i.e. how the triangles are filled in)
         // GL_POINT, GL_LINE, and GL_FILL
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
-        glDrawArrays(GL_TRIANGLES, 0, numberOfVerticesToDraw);
+        glDrawArrays(GL_TRIANGLES, 0, numberOfCowVerticesToDraw);
 //        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glfwSwapBuffers(window);
