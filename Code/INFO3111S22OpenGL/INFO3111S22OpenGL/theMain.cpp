@@ -234,9 +234,12 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
 //            >> discardThisValue     // confidence
 //            >> discardThisValue;    // intensity
 
-        pTEMPVerticesInFile[count].r = 1.0f;
-        pTEMPVerticesInFile[count].g = 1.0f;
-        pTEMPVerticesInFile[count].b = 1.0f;
+        unsigned int red, green, blue, alpha;
+        thePlyFile >> red >> green >> blue >> alpha; 
+
+        pTEMPVerticesInFile[count].r = (float)red/255.0f;
+        pTEMPVerticesInFile[count].g = (float)green/255.0f;
+        pTEMPVerticesInFile[count].b = (float)blue/255.0f;
 
     }
 
@@ -300,23 +303,23 @@ bool LoadPlyModelFromFile(std::string fileName, sVertex* &pVertices, unsigned in
         pVertices[ vertexToDrawIndex + 0 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].x;
         pVertices[ vertexToDrawIndex + 0 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].y;
         pVertices[ vertexToDrawIndex + 0 ].z = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex0 ].z;
-        pVertices[vertexToDrawIndex + 0].r = 1.0f;
-        pVertices[vertexToDrawIndex + 0].g = 1.0f;
-        pVertices[vertexToDrawIndex + 0].b = 1.0f;
+        pVertices[vertexToDrawIndex + 0].r = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex0].r;
+        pVertices[vertexToDrawIndex + 0].g = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex0].g;
+        pVertices[vertexToDrawIndex + 0].b = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex0].b;
 
         pVertices[ vertexToDrawIndex + 1 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].x;
         pVertices[ vertexToDrawIndex + 1 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].y;
         pVertices[ vertexToDrawIndex + 1 ].z = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex1 ].z;
-        pVertices[vertexToDrawIndex + 1].r = 1.0f;
-        pVertices[vertexToDrawIndex + 1].g = 1.0f;
-        pVertices[vertexToDrawIndex + 1].b = 1.0f;
+        pVertices[vertexToDrawIndex + 1].r = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex1].r;
+        pVertices[vertexToDrawIndex + 1].g = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex1].g;
+        pVertices[vertexToDrawIndex + 1].b = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex1].b;
 
         pVertices[ vertexToDrawIndex + 2 ].x = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].x;
         pVertices[ vertexToDrawIndex + 2 ].y = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].y;
         pVertices[ vertexToDrawIndex + 2 ].z = pTEMPVerticesInFile[ pTriangleArrayInFile[triIndex].vertexIndex2 ].z;
-        pVertices[vertexToDrawIndex + 2].r = 1.0f;
-        pVertices[vertexToDrawIndex + 2].g = 1.0f;
-        pVertices[vertexToDrawIndex + 2].b = 1.0f;
+        pVertices[vertexToDrawIndex + 2].r = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex2].r;
+        pVertices[vertexToDrawIndex + 2].g = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex2].g;
+        pVertices[vertexToDrawIndex + 2].b = pTEMPVerticesInFile[pTriangleArrayInFile[triIndex].vertexIndex2].b;
 
         // Next triangle is 3 vertices later in the array
         vertexToDrawIndex += 3;
@@ -413,7 +416,8 @@ int main(void)
     unsigned int numberOfVerticesToDraw = 0;
 //    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.ply", pVertices, numberOfVerticesToDraw) )
 //    if ( ! LoadPlyModelFromFile("assets/models/bun_zipper_res2.xyz.ply", pVertices, numberOfVerticesToDraw) )
-    if ( ! LoadPlyModelFromFile("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", pVertices, numberOfVerticesToDraw) )
+//    if ( ! LoadPlyModelFromFile("assets/models/cow_xyz_only.ply", pVertices, numberOfVerticesToDraw) )
+    if ( ! LoadPlyModelFromFile("assets/models/cow_xyz_rgba.ply", pVertices, numberOfVerticesToDraw) )
     {
         std::cout << "Oh no! Model didn't load!" << std::endl;
         return -1;
@@ -549,7 +553,7 @@ int main(void)
 
         // Change the polygon mode (i.e. how the triangles are filled in)
         // GL_POINT, GL_LINE, and GL_FILL
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
         glDrawArrays(GL_TRIANGLES, 0, numberOfVerticesToDraw);
