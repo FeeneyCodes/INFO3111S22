@@ -26,12 +26,18 @@
     <ClCompile Include="cShaderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cVAOManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cShaderManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="globalStuff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cVAOManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

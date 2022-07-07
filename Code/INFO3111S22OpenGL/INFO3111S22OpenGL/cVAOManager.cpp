@@ -1,6 +1,7 @@
 #include "cVAOManager.h"
 
 //#include "globalOpenGLStuff.h"
+#include "globalStuff.h"
 
 #include <fstream>
 
@@ -232,13 +233,17 @@ bool cVAOManager::m_LoadTheModel(std::string fileName,
 //		tempVert.pos.z *= 10.0f;
 
 
-		thePlyFile >> tempVert.colour.x >> tempVert.colour.y
-			       >> tempVert.colour.z >> tempVert.colour.w; 
+//		thePlyFile >> tempVert.colour.x >> tempVert.colour.y
+//			       >> tempVert.colour.z >> tempVert.colour.w; 
 
 		// Scale the colour from 0 to 1, instead of 0 to 255
-		tempVert.colour.x /= 255.0f;
-		tempVert.colour.y /= 255.0f;
-		tempVert.colour.z /= 255.0f;
+//		tempVert.colour.x /= 255.0f;
+//		tempVert.colour.y /= 255.0f;
+//		tempVert.colour.z /= 255.0f;
+// 
+		tempVert.colour.x = 255.0f;
+		tempVert.colour.y = 255.0f;
+		tempVert.colour.z = 255.0f;
 
 		// Add too... what? 
 		vecTempPlyVerts.push_back(tempVert);

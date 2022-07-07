@@ -6,6 +6,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 // The vertex structure, as it is in the SHADER (on the GPU)
 // This is also called the 'vertex layout'. 
@@ -55,11 +56,22 @@ public:
 						  sModelDrawInfo &drawInfo, 
 						  unsigned int shaderProgramID);
 
+	// An alternative where I don't care about the loading info
+	bool LoadModelIntoVAO(std::string fileName, unsigned int shaderProgramID);
+
+	// Another variation that loads a bunch of models at once
+	bool LoadModelsIntoVAO(std::vector<std::string> vecFileNames, 
+						   std::vector<sModelDrawInfo> &vecModelDrawInfo,
+						   unsigned int shaderProgramID);
+
 	// We don't want to return an int, likely
 	bool FindDrawInfoByModelName(std::string filename,
 								 sModelDrawInfo &drawInfo);
 
 	std::string getLastError(bool bAndClear = true);
+
+	// You could pass "assets/models/"
+	void SetModelDirectorPrefix(std::string filePathPrefix);
 
 private:
 
