@@ -2,6 +2,8 @@
 
 uniform mat4 MVP;
 
+uniform vec4 objectColourRGBA;
+
 in vec3 vPos;	// vec2 = x,y  vec3 = x,y,z
 in vec3 vCol;
 
@@ -15,5 +17,6 @@ void main()
 
     gl_Position = MVP * vec4(vFinalPosition, 1.0);
 
-    color = vCol;
+//    color = vCol;
+    color = objectColourRGBA.rgb;
 }

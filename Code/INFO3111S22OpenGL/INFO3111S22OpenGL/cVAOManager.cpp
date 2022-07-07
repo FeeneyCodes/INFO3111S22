@@ -227,10 +227,11 @@ bool cVAOManager::m_LoadTheModel(std::string fileName,
 	{
 		thePlyFile >> tempVert.pos.x >> tempVert.pos.y >> tempVert.pos.z;
 		
+//		tempVert.pos.x += 10.0f;
 
-//		tempVert.pos.x *= 10.0f;
-//		tempVert.pos.y *= 10.0f;
-//		tempVert.pos.z *= 10.0f;
+		//tempVert.pos.x *= 2.0f;
+		//tempVert.pos.y *= 2.0f;
+		//tempVert.pos.z *= 2.0f;
 
 
 //		thePlyFile >> tempVert.colour.x >> tempVert.colour.y

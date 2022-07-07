@@ -253,19 +253,35 @@ int main(void)
 
 
     // Add these objects to the scene we are going to draw
-    cMesh* pBunny = new cMesh();
-    pBunny->meshFileName = "assets/models/bun_zipper.xyz.ply";
-    ::g_vec_pMeshesToDraw.push_back(pBunny);
+//   cMesh* pBunny = new cMesh();
+//   pBunny->meshFileName = "assets/models/bun_zipper.xyz.ply";
+//   ::g_vec_pMeshesToDraw.push_back(pBunny);
+//
+//   cMesh* pCow = new cMesh();
+//   pCow->meshFileName = "assets/models/cow_xyz_only.ply";
+//   ::g_vec_pMeshesToDraw.push_back(pCow);
+
+    cMesh* pSpider1 = new cMesh();
+    pSpider1->XYZLocation.x = -5.0f;
+    pSpider1->orientationEulerAngle.x = glm::radians(-90.0f);
+    pSpider1->RGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    pSpider1->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply";
+    ::g_vec_pMeshesToDraw.push_back(pSpider1);
+
+    cMesh* pSpider2 = new cMesh();
+    pSpider2->XYZLocation.x = +5.0f;
+    pSpider2->XYZLocation.y = 2.0f;
+    pSpider2->RGBA = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
+    pSpider2->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply";
+    ::g_vec_pMeshesToDraw.push_back(pSpider2);
 
     cMesh* pCow = new cMesh();
+    pCow->XYZLocation.y = -2.0f;
+    pCow->orientationEulerAngle.y = glm::radians(-145.0f);
+    pCow->overallScale = 0.5f;
+    pCow->RGBA = glm::vec4(0.5f, 1.0f, 0.5f, 1.0f);
     pCow->meshFileName = "assets/models/cow_xyz_only.ply";
     ::g_vec_pMeshesToDraw.push_back(pCow);
-
-    cMesh* pSpider = new cMesh();
-    pSpider->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply";
-    ::g_vec_pMeshesToDraw.push_back(pSpider);
-
-
 
 
     while ( ! glfwWindowShouldClose(window) )
@@ -273,7 +289,12 @@ int main(void)
         float ratio;
         int width, height;
 //        mat4x4 m, p, mvp;     // linmath.h
-        glm::mat4x4 m, p, mvp;
+
+        glm::mat4x4 matModel = glm::mat4(1.0f);
+        glm::mat4x4 matProjection = glm::mat4(1.0f);
+        glm::mat4x4 matView = glm::mat4(1.0f);
+
+        glm::mat4x4 mvp = glm::mat4(1.0f);
 
         glfwGetFramebufferSize(window, &width, &height);
         ratio = width / (float)height;
@@ -283,64 +304,96 @@ int main(void)
         glClearColor(0.0f, 0.3f, 1.0f, 1.0f);       // Clear screen to blue colour
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-//        mat4x4_identity(m);
-        m = glm::mat4x4(1.0f);
-
-//        mat4x4_rotate_Z(m, m, (float)glfwGetTime());
-        glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
-                                        (float)glfwGetTime(),
-                                        glm::vec3(0.0f, 0.0, 1.0f));     
-
         
 //        mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-        p = glm::perspective(0.6f,
+        matProjection = glm::perspective(0.6f,
                              ratio,
                              0.1f,
                              1000.0f);
-
-//        mat4x4_mul(mvp, p, m);
-        glm::mat4x4 v = glm::mat4(1.0f);
 
 //        glm::vec3 cameraEye = glm::vec3(0.0, 0.0, -4.0f);
         glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 upVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
-        v = glm::lookAt(
-            ::g_cameraEye,
-            cameraTarget,
-            upVector);
+        //        mat4x4_mul(mvp, p, m);
+        
+        matView = glm::lookAt( ::g_cameraEye,
+                               cameraTarget,
+                               upVector);
 
-        //mat4x4_mul(mvp, p, m);
-        mvp = p * v * m;
 
 //        glUseProgram(program);
         glUseProgram(shaderProgramNumber);
-
-//        glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*)mvp);
-        glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
-
-
-        // This turns this on and off
-        glEnable(GL_DEPTH_TEST);
-
-        // Remove "back facing" triangles (just doesn't draw them)
-        glCullFace(GL_BACK);
-
-
-        // Change the polygon mode (i.e. how the triangles are filled in)
-        // GL_POINT, GL_LINE, and GL_FILL
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-        // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
-//        glDrawArrays(GL_TRIANGLES, 0, numberOfCowVerticesToDraw);
-//        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // Loop through the mesh objects in the scene, drawing each one
         for (unsigned int index = 0; index != ::g_vec_pMeshesToDraw.size(); index++)
         {
             sModelDrawInfo modelDrawingInfo;
             cMesh* pCurrentMesh = ::g_vec_pMeshesToDraw[index];
+
+            //        mat4x4_identity(m);
+            matModel = glm::mat4x4(1.0f);
+
+            //        mat4x4_rotate_Z(m, m, (float)glfwGetTime());
+            glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
+                                            pCurrentMesh->orientationEulerAngle.x,
+                                            glm::vec3(0.0f, 0.0, 1.0f));
+
+            glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
+                                            pCurrentMesh->orientationEulerAngle.y,           //glm::radians(147.0f),  
+                                            glm::vec3(0.0f, 0.0, 1.0f));
+
+            glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
+                                            pCurrentMesh->orientationEulerAngle.z,  // (float)glfwGetTime(),           //glm::radians(147.0f),  
+                                            glm::vec3(0.0f, 0.0, 1.0f));
+
+            glm::mat4 matTranslate = glm::translate(glm::mat4(1.0f),
+                                                    glm::vec3(pCurrentMesh->XYZLocation.x, 
+                                                              pCurrentMesh->XYZLocation.y,
+                                                              pCurrentMesh->XYZLocation.z));
+
+            float scale = pCurrentMesh->overallScale;
+            glm::mat4 matScale = glm::scale(glm::mat4(1.0f),
+                                            glm::vec3(scale, scale, scale));
+
+
+            matModel = matModel * matTranslate;
+            matModel = matModel * rotateX;
+            matModel = matModel * rotateY;
+            matModel = matModel * rotateZ;
+            matModel = matModel * matScale;
+
+
+            //mat4x4_mul(mvp, p, m);
+            mvp = matProjection * matView * matModel;
+
+    //        glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*)mvp);
+            glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
+
+            // Get the objectColourRGBA uniform (register) location inside the shader
+            GLint objectColourRGBA_UniLoc = glGetUniformLocation(shaderProgramNumber, "objectColourRGBA");
+
+            glUniform4f( objectColourRGBA_UniLoc, 
+                         pCurrentMesh->RGBA.r,
+                         pCurrentMesh->RGBA.g, 
+                         pCurrentMesh->RGBA.b, 
+                         pCurrentMesh->RGBA.a);
+
+            // This turns this on and off
+            glEnable(GL_DEPTH_TEST);
+
+            // Remove "back facing" triangles (just doesn't draw them)
+            glCullFace(GL_BACK);
+
+
+            // Change the polygon mode (i.e. how the triangles are filled in)
+            // GL_POINT, GL_LINE, and GL_FILL
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+            // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
+    //        glDrawArrays(GL_TRIANGLES, 0, numberOfCowVerticesToDraw);
+    //        glDrawArrays(GL_TRIANGLES, 0, 3);
+
 
             if ( pVAOManager->FindDrawInfoByModelName(pCurrentMesh->meshFileName, modelDrawingInfo) )
             {
