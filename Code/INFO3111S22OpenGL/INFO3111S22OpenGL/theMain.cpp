@@ -54,34 +54,81 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     // Q = down
     // E = up
 
+
+//    if ( mods == GLFW_MOD_SHIFT )       // ONLY the shift and NO OTHER MODIFIERS
+//    if ( ( mods & GLFW_MOD_SHIFT ) == GLFW_MOD_SHIFT )      // The shift and maybe other modifers, too
+//        0000111
+//        0000001 
+//        -------
+//        0000001
+
     const float cameraMovementSpeed = 0.1f;
+    const float objectMovementSpeed = 0.1f;
+    const float objectRotationSpeed = glm::radians(1.0f);
 
-    if ( key == GLFW_KEY_A )
-    {
-        ::g_cameraEye.x -= cameraMovementSpeed;     // "left"
-    }
-    if ( key == GLFW_KEY_D )
-    {
-        ::g_cameraEye.x += cameraMovementSpeed;     // "right"
-    }
+    // Nudge, nudge, wink, wink - Hey, why not change this value with some other keys...
+    //  then maybe you can "select" all the objects?? Huh??? Isn't THAT neat??
+    unsigned int objectIDToMove = 2;
 
-    if ( key == GLFW_KEY_Q )
+    if (key == GLFW_KEY_LEFT)
     {
-        ::g_cameraEye.y -= cameraMovementSpeed;     // "down"
-    }
-    if ( key == GLFW_KEY_E )
-    {
-        ::g_cameraEye.y += cameraMovementSpeed;     // "up"
+
     }
 
-    if ( key == GLFW_KEY_W )
+    if (mods == GLFW_MOD_SHIFT)
     {
-        ::g_cameraEye.z += cameraMovementSpeed;     // "forward"
-    }
-    if ( key == GLFW_KEY_S )
+        // Move the object
+        if (key == GLFW_KEY_A) { ::g_vec_pMeshesToDraw[objectIDToMove]->XYZLocation.x -= objectMovementSpeed; }
+        if (key == GLFW_KEY_D) { ::g_vec_pMeshesToDraw[objectIDToMove]->XYZLocation.x += objectMovementSpeed; }
+        if (key == GLFW_KEY_W) { ::g_vec_pMeshesToDraw[objectIDToMove]->XYZLocation.z -= objectMovementSpeed; }
+        if (key == GLFW_KEY_S) { ::g_vec_pMeshesToDraw[objectIDToMove]->XYZLocation.z += objectMovementSpeed; }
+        if (key == GLFW_KEY_Q) { ::g_vec_pMeshesToDraw[objectIDToMove]->XYZLocation.y -= objectMovementSpeed; }
+        if (key == GLFW_KEY_E) { ::g_vec_pMeshesToDraw[objectIDToMove]->XYZLocation.y += objectMovementSpeed; }
+    }   
+    else if (mods == GLFW_MOD_CONTROL)
     {
-        ::g_cameraEye.z -= cameraMovementSpeed;     // "backwards"
+        // Move the object
+        if (key == GLFW_KEY_A) { ::g_vec_pMeshesToDraw[objectIDToMove]->orientationEulerAngle.x -= objectRotationSpeed; }
+        if (key == GLFW_KEY_D) { ::g_vec_pMeshesToDraw[objectIDToMove]->orientationEulerAngle.x += objectRotationSpeed; }
+        if (key == GLFW_KEY_W) { ::g_vec_pMeshesToDraw[objectIDToMove]->orientationEulerAngle.z -= objectRotationSpeed; }
+        if (key == GLFW_KEY_S) { ::g_vec_pMeshesToDraw[objectIDToMove]->orientationEulerAngle.z += objectRotationSpeed; }
+        if (key == GLFW_KEY_Q) { ::g_vec_pMeshesToDraw[objectIDToMove]->orientationEulerAngle.y -= objectRotationSpeed; }
+        if (key == GLFW_KEY_E) { ::g_vec_pMeshesToDraw[objectIDToMove]->orientationEulerAngle.y += objectRotationSpeed; }
     }
+    else
+    {
+        // Camera control
+        if ( key == GLFW_KEY_A )
+        {
+            ::g_cameraEye.x -= cameraMovementSpeed;     // "left"
+    //        ::g_vec_pMeshesToDraw[4]->XYZLocation.x -= cameraMovementSpeed;     // "left"
+        }
+        if ( key == GLFW_KEY_D )
+        {
+            ::g_cameraEye.x += cameraMovementSpeed;     // "right"
+    //        ::g_vec_pMeshesToDraw[4]->XYZLocation.x += cameraMovementSpeed;     // "left"
+        }
+
+        if ( key == GLFW_KEY_Q )
+        {
+            ::g_cameraEye.y -= cameraMovementSpeed;     // "down"
+        }
+        if ( key == GLFW_KEY_E )
+        {
+            ::g_cameraEye.y += cameraMovementSpeed;     // "up"
+        }
+
+        if ( key == GLFW_KEY_W )
+        {
+            ::g_cameraEye.z += cameraMovementSpeed;     // "forward"
+        }
+        if ( key == GLFW_KEY_S )
+        {
+            ::g_cameraEye.z -= cameraMovementSpeed;     // "backwards"
+        }        // We AREN'T holding JUST the shift key
+    }//if (mods == GLFW_MOD_SHIFT)
+
+
 
 }
 
@@ -276,7 +323,7 @@ int main(void)
 //   ::g_vec_pMeshesToDraw.push_back(pCow);
 
     cMesh* pSpider1 = new cMesh();
-    pSpider1->XYZLocation.x = -5.0f;
+    pSpider1->XYZLocation.x = -5.07f;
     pSpider1->orientationEulerAngle.x = glm::radians(-90.0f);
     pSpider1->RGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
     pSpider1->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply";
@@ -355,6 +402,10 @@ int main(void)
 
 //        glUseProgram(program);
         glUseProgram(shaderProgramNumber);
+
+
+//        ::g_vec_pMeshesToDraw[4]->XYZLocation.z += 0.01f;
+
 
         // Loop through the mesh objects in the scene, drawing each one
         for (unsigned int index = 0; index != ::g_vec_pMeshesToDraw.size(); index++)
