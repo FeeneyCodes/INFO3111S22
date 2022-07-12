@@ -511,7 +511,10 @@ int main(void)
 //        glfwSetWindowTitle(window, "Hello!");
         glfwSetWindowTitle( window, ssTitle.str().c_str() );
 
-    }
+    }// while ( ! glfwWindowShouldClose(window) )
+
+    // Save my scene...
+
 
     glfwDestroyWindow(window);
 
