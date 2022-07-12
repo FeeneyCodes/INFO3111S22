@@ -1,0 +1,23 @@
+5
+assets/models/cow_xyz_only.ply
+assets/models/bun_zipper.xyz.ply
+assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply
+assets/models/Seafloor2_xyz.ply
+assets/models/de--lorean_xyz.ply
+2
+assets/models/cow_xyz_only.ply
+10.5   6.4   -141.5
+0.4   0.1  0.2  1.0 
+0.0   0.0   0.0 
+1.0
+is_wireframe
+myCowTexture.bmp
+assets/models/cow_xyz_only.ply
+10.5   6.4   -143.5
+0.4   0.1  0.2  1.0 
+0.0   0.0   0.0 
+1.0
+is_wireframe
+JerseyCowTexture.bmp
+
+

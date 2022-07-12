@@ -25,6 +25,7 @@
 
 
 
+
 //struct sVertex
 //{
 //    float x, y, z;      // vPos  NOW WITH MORE Z!
@@ -242,17 +243,27 @@ int main(void)
     // Load some models
     cVAOManager* pVAOManager = new cVAOManager();
 
-    sModelDrawInfo bunnyDrawInfo;
-    pVAOManager->LoadModelIntoVAO("assets/models/bun_zipper.xyz.ply", bunnyDrawInfo, shaderProgramNumber);
+    std::string sceneLoadingErrors;
+    if ( ! LoadAllTheModels("assets/FeeneyAmazingScene_01.txt", pVAOManager, shaderProgramNumber, sceneLoadingErrors) )
+    {
+        std::cout << "Something went wrong: " << sceneLoadingErrors << std::endl;
+    }
+    else
+    {
+        std::cout << "Scene loaded OK" << std::endl;
+    }
 
-    sModelDrawInfo cowDrawInfo;
-    pVAOManager->LoadModelIntoVAO("assets/models/cow_xyz_only.ply", cowDrawInfo, shaderProgramNumber);
-
-    sModelDrawInfo spiderDrawInfo;
-    pVAOManager->LoadModelIntoVAO("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", spiderDrawInfo, shaderProgramNumber);
-
-    sModelDrawInfo seafloorDrawInfo;
-    pVAOManager->LoadModelIntoVAO("assets/models/Seafloor2_xyz.ply", seafloorDrawInfo, shaderProgramNumber);
+//    sModelDrawInfo bunnyDrawInfo;
+//    pVAOManager->LoadModelIntoVAO("assets/models/bun_zipper.xyz.ply", bunnyDrawInfo, shaderProgramNumber);
+//
+//    sModelDrawInfo cowDrawInfo;
+//    pVAOManager->LoadModelIntoVAO("assets/models/cow_xyz_only.ply", cowDrawInfo, shaderProgramNumber);
+//
+//    sModelDrawInfo spiderDrawInfo;
+//    pVAOManager->LoadModelIntoVAO("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", spiderDrawInfo, shaderProgramNumber);
+//
+//    sModelDrawInfo seafloorDrawInfo;
+//    pVAOManager->LoadModelIntoVAO("assets/models/Seafloor2_xyz.ply", seafloorDrawInfo, shaderProgramNumber);
 
 
     // Add these objects to the scene we are going to draw
@@ -293,6 +304,16 @@ int main(void)
     pSeaFloor->RGBA = glm::vec4(76.0f/255.0f, 70.0f/255.0f, 50.0f/255.0f, 1.0f);
     pSeaFloor->meshFileName = "assets/models/Seafloor2_xyz.ply";
     ::g_vec_pMeshesToDraw.push_back(pSeaFloor);
+
+    cMesh* pDeLorean = new cMesh();
+    pDeLorean->meshFileName = "assets/models/de--lorean_xyz.ply";
+    pDeLorean->bIsWireframe = true;
+    pDeLorean->orientationEulerAngle.x = glm::radians(-90.0f);
+    pDeLorean->overallScale = 0.5f;
+    pDeLorean->XYZLocation.x = -10.0f;
+    ::g_vec_pMeshesToDraw.push_back(pDeLorean);
+
+
 
     while ( ! glfwWindowShouldClose(window) )
     {
@@ -347,11 +368,11 @@ int main(void)
             //        mat4x4_rotate_Z(m, m, (float)glfwGetTime());
             glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f),
                                             pCurrentMesh->orientationEulerAngle.x,
-                                            glm::vec3(0.0f, 0.0, 1.0f));
+                                            glm::vec3(1.0f, 0.0f, 0.0f));
 
             glm::mat4 rotateY = glm::rotate(glm::mat4(1.0f),
                                             pCurrentMesh->orientationEulerAngle.y,           //glm::radians(147.0f),  
-                                            glm::vec3(0.0f, 0.0, 1.0f));
+                                            glm::vec3(0.0f, 1.0f, 0.0f));
 
             glm::mat4 rotateZ = glm::rotate(glm::mat4(1.0f),
                                             pCurrentMesh->orientationEulerAngle.z,  // (float)glfwGetTime(),           //glm::radians(147.0f),  
