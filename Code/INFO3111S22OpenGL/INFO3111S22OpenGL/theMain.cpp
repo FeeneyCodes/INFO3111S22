@@ -251,6 +251,9 @@ int main(void)
     sModelDrawInfo spiderDrawInfo;
     pVAOManager->LoadModelIntoVAO("assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply", spiderDrawInfo, shaderProgramNumber);
 
+    sModelDrawInfo seafloorDrawInfo;
+    pVAOManager->LoadModelIntoVAO("assets/models/Seafloor2_xyz.ply", seafloorDrawInfo, shaderProgramNumber);
+
 
     // Add these objects to the scene we are going to draw
 //   cMesh* pBunny = new cMesh();
@@ -272,6 +275,7 @@ int main(void)
     pSpider2->XYZLocation.x = +5.0f;
     pSpider2->XYZLocation.y = 2.0f;
     pSpider2->RGBA = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
+    pSpider2->bIsWireframe = true;      // glPolygonMode() will be GL_LINE
     pSpider2->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply";
     ::g_vec_pMeshesToDraw.push_back(pSpider2);
 
@@ -283,6 +287,12 @@ int main(void)
     pCow->meshFileName = "assets/models/cow_xyz_only.ply";
     ::g_vec_pMeshesToDraw.push_back(pCow);
 
+    cMesh* pSeaFloor = new cMesh();
+    pSeaFloor->XYZLocation.y = -15.0f;
+    // https://www.colorhexa.com/c2b280
+    pSeaFloor->RGBA = glm::vec4(76.0f/255.0f, 70.0f/255.0f, 50.0f/255.0f, 1.0f);
+    pSeaFloor->meshFileName = "assets/models/Seafloor2_xyz.ply";
+    ::g_vec_pMeshesToDraw.push_back(pSeaFloor);
 
     while ( ! glfwWindowShouldClose(window) )
     {
@@ -388,7 +398,16 @@ int main(void)
 
             // Change the polygon mode (i.e. how the triangles are filled in)
             // GL_POINT, GL_LINE, and GL_FILL
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            if (pCurrentMesh->bIsWireframe)
+            {
+                // Draw only the lines...
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            }
+            else
+            {
+                // "Fill" in the triangles ("solid" colour)
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
 
             // GL_LINE_LOOP, GL_POINTS, or GL_TRIANGLES
     //        glDrawArrays(GL_TRIANGLES, 0, numberOfCowVerticesToDraw);

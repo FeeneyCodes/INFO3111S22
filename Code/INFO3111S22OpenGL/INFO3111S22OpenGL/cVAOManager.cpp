@@ -226,7 +226,7 @@ bool cVAOManager::m_LoadTheModel(std::string fileName,
 		  index++ )
 	{
 		thePlyFile >> tempVert.pos.x >> tempVert.pos.y >> tempVert.pos.z;
-		
+
 //		tempVert.pos.x += 10.0f;
 
 		//tempVert.pos.x *= 2.0f;

@@ -56,6 +56,11 @@ public:
 						  sModelDrawInfo &drawInfo, 
 						  unsigned int shaderProgramID);
 
+	bool LoadModelIntoVAO(std::string fileName, 
+						  sModelDrawInfo &drawInfo, 
+						  unsigned int shaderProgramID,
+						  float objectColourRed, float objectColourBlue, float ObjectColourGreen);
+
 	// An alternative where I don't care about the loading info
 	bool LoadModelIntoVAO(std::string fileName, unsigned int shaderProgramID);
 

@@ -15,6 +15,7 @@ public:
 		this->XYZLocation = glm::vec3(0.0f, 0.0f, 0.0f);
 		this->orientationEulerAngle = glm::vec3(0.0f, 0.0f, 0.0f);
 		this->overallScale = 1.0f;
+		this->bIsWireframe = false;
 	}
 	std::string meshFileName;
 	// These are from 0.0 to 1.0f (1.0f = white, 0.0f = black)
@@ -22,4 +23,6 @@ public:
 	glm::vec3 XYZLocation;
 	glm::vec3 orientationEulerAngle;
 	float overallScale;		
+	// 
+	bool bIsWireframe;
 };
