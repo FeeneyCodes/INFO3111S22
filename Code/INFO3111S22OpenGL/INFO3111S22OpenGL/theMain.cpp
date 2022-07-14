@@ -180,7 +180,7 @@ int main(void)
     //GLuint vertex_shader;
     //GLuint fragment_shader;
     GLuint shaderProgramNumber = 0;     
-    GLint mvp_location;
+//    GLint mvp_location;
 //    GLint vpos_location;                  Now handled by the VAOManager
 //    GLint vcol_location;                  Now handled by the VAOManager
 
@@ -290,7 +290,7 @@ int main(void)
     //glAttachShader(program, fragment_shader);
     //glLinkProgram(program);
 
-    mvp_location = glGetUniformLocation(shaderProgramNumber, "MVP");
+//    mvp_location = glGetUniformLocation(shaderProgramNumber, "MVP");
 
 //    struct sVertex
 //    {
@@ -355,7 +355,8 @@ int main(void)
 
     cMesh* pSpider1 = new cMesh();
     pSpider1->XYZLocation.x = -5.07f;
-    pSpider1->orientationEulerAngle.x = glm::radians(-90.0f);
+    pSpider1->orientationEulerAngle.x = glm::radians(-137.5f);
+    pSpider1->orientationEulerAngle.z = glm::radians(+8.14f);
     pSpider1->RGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
     pSpider1->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pSpider1);
@@ -471,18 +472,32 @@ int main(void)
                                             glm::vec3(scale, scale, scale));
 
 
-            matModel = matModel * matTranslate;
+            matModel = matModel * matTranslate;            
             matModel = matModel * rotateX;
             matModel = matModel * rotateY;
             matModel = matModel * rotateZ;
             matModel = matModel * matScale;
 
 
-            //mat4x4_mul(mvp, p, m);
-            mvp = matProjection * matView * matModel;
+//            //mat4x4_mul(mvp, p, m);
+//            mvp = matProjection * matView * matModel;
+//
+//    //        glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*)mvp);
+//            GLint mvp_location = glGetUniformLocation(shaderProgramNumber, "MVP");
+//
+//            glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
-    //        glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*)mvp);
-            glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
+            //uniform mat4 mModel;
+            //uniform mat4 mView;
+            //uniform mat4 mProj;
+
+            GLint mModel_location = glGetUniformLocation(shaderProgramNumber, "mModel");
+            GLint mView_location = glGetUniformLocation(shaderProgramNumber, "mView");
+            GLint mProj_location = glGetUniformLocation(shaderProgramNumber, "mProj");
+
+            glUniformMatrix4fv(mModel_location, 1, GL_FALSE, glm::value_ptr(matModel));
+            glUniformMatrix4fv(mView_location, 1, GL_FALSE, glm::value_ptr(matView));
+            glUniformMatrix4fv(mProj_location, 1, GL_FALSE, glm::value_ptr(matProjection));
 
             // Get the objectColourRGBA uniform (register) location inside the shader
             GLint objectColourRGBA_UniLoc = glGetUniformLocation(shaderProgramNumber, "objectColourRGBA");
