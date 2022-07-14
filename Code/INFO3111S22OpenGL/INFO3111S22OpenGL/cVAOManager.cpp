@@ -212,39 +212,69 @@ bool cVAOManager::m_LoadTheModel(std::string fileName,
 	
 	// This is set up to match the ply (3d model) file. 
 	// NOT the shader. 
-	struct sVertPly
+//		ply
+//		format ascii 1.0
+//		comment VCGLIB generated
+//		element vertex 209466
+//		property float x
+//		property float y
+//		property float z
+//		property float nx
+//		property float ny
+//		property float nz
+//		property uchar red
+//		property uchar green
+//		property uchar blue
+//		property uchar alpha
+//		property float texture_u
+//		property float texture_v
+//		element face 69451
+//		property list uchar int vertex_indices
+//		end_header
+//		- 0.0378297 0.12794 0.00447467 0.1961509 0.9725953 - 0.1248331 255 255 255 255 0.373317 0.4743809
+	struct sVertexPlyFileFormat
 	{
 		glm::vec3 pos;
-		glm::vec4 colour;
+		glm::vec3 normal;
+		glm::vec4 colourRGBA;
+		glm::vec2 textureCoords;
 	};
 
-	std::vector<sVertPly> vecTempPlyVerts;
+	std::vector<sVertexPlyFileFormat> vecTempPlyVerts;
 
-	sVertPly tempVert;
+	sVertexPlyFileFormat tempVert;
 	// Load the vertices...
 	for ( unsigned int index = 0; index != drawInfo.numberOfVertices; // ::g_NumberOfVertices; 
 		  index++ )
 	{
+
+//		property float x
+//		property float y
+//		property float z		
 		thePlyFile >> tempVert.pos.x >> tempVert.pos.y >> tempVert.pos.z;
 
-//		tempVert.pos.x += 10.0f;
+//		property float nx
+//		property float ny
+//		property float nz
+		thePlyFile >> tempVert.normal.x >> tempVert.normal.y >> tempVert.normal.z;
 
-		//tempVert.pos.x *= 2.0f;
-		//tempVert.pos.y *= 2.0f;
-		//tempVert.pos.z *= 2.0f;
-
-
-//		thePlyFile >> tempVert.colour.x >> tempVert.colour.y
-//			       >> tempVert.colour.z >> tempVert.colour.w; 
-
-		// Scale the colour from 0 to 1, instead of 0 to 255
-//		tempVert.colour.x /= 255.0f;
-//		tempVert.colour.y /= 255.0f;
-//		tempVert.colour.z /= 255.0f;
+//		property uchar red
+//		property uchar green
+//		property uchar blue
+//		property uchar alpha
+		thePlyFile >> tempVert.colourRGBA.r >> tempVert.colourRGBA.g >> tempVert.colourRGBA.b >> tempVert.colourRGBA.a;
+		// The file has these as 0-255 (one byte) values, 
+		//	but we want them as 0.0 - 1.0 values (for the shader)
+		tempVert.colourRGBA.r /= 255.0f;
+		tempVert.colourRGBA.g /= 255.0f;
+		tempVert.colourRGBA.b /= 255.0f;
+		tempVert.colourRGBA.a /= 255.0f;
 // 
-		tempVert.colour.x = 255.0f;
-		tempVert.colour.y = 255.0f;
-		tempVert.colour.z = 255.0f;
+//		property float texture_u
+//		property float texture_v
+		// Texture (UV or ST) coordinates are from 0.0 to 1.0 as well
+		thePlyFile >> tempVert.textureCoords.x >> tempVert.textureCoords.y;
+
 
 		// Add too... what? 
 		vecTempPlyVerts.push_back(tempVert);
@@ -266,16 +296,16 @@ bool cVAOManager::m_LoadTheModel(std::string fileName,
 		drawInfo.pVertices[index].y = vecTempPlyVerts[index].pos.y;
 		drawInfo.pVertices[index].z = vecTempPlyVerts[index].pos.z;
 
-		drawInfo.pVertices[index].r = vecTempPlyVerts[index].colour.r;
-		drawInfo.pVertices[index].g = vecTempPlyVerts[index].colour.g;
-		drawInfo.pVertices[index].b = vecTempPlyVerts[index].colour.b;
+		drawInfo.pVertices[index].r = vecTempPlyVerts[index].colourRGBA.r;
+		drawInfo.pVertices[index].g = vecTempPlyVerts[index].colourRGBA.g;
+		drawInfo.pVertices[index].b = vecTempPlyVerts[index].colourRGBA.b;
 	}// for ( unsigned int index...
 
 
 	struct sTriPly
 	{
 		unsigned int vindex[3];		// the 3 indices
-		sVertPly verts[3];			// The actual vertices
+		sVertexPlyFileFormat verts[3];			// The actual vertices
 	};
 
 	std::vector<sTriPly> vecTempPlyTriangles;

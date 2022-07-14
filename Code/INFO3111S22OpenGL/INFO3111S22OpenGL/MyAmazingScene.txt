@@ -1,0 +1,376 @@
+assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply
+-5.07 0 0
+assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply
+5 2 0
+assets/models/cow_xyz_only.ply
+0 -2 0
+assets/models/Seafloor2_xyz.ply
+0 -15 0
+assets/models/de--lorean_xyz.ply
+-10 0 0
+assets/models/de--lorean_xyz.ply
+39.5962 32.284 24.6605
+assets/models/de--lorean_xyz.ply
+-13.5548 -35.2687 -33.4101
+assets/models/de--lorean_xyz.ply
+7.11844 10.1764 10.7166
+assets/models/de--lorean_xyz.ply
+30.2606 1.98828 -19.805
+assets/models/de--lorean_xyz.ply
+-26.4672 36.2239 -29.0399
+assets/models/de--lorean_xyz.ply
+-20.2719 34.0144 -47.6257
+assets/models/de--lorean_xyz.ply
+-22.7104 8.79086 19.1183
+assets/models/de--lorean_xyz.ply
+44.9156 24.4438 -39.172
+assets/models/de--lorean_xyz.ply
+-27.4895 -7.48466 30.2881
+assets/models/de--lorean_xyz.ply
+-43.646 19.9759 0.480663
+assets/models/de--lorean_xyz.ply
+-42.9624 46.6613 18.3187
+assets/models/de--lorean_xyz.ply
+-2.47353 -34.4447 0.392162
+assets/models/de--lorean_xyz.ply
+-2.47047 -37.698 -13.2191
+assets/models/de--lorean_xyz.ply
+42.1384 4.95468 -15.4012
+assets/models/de--lorean_xyz.ply
+-20.22 23.9189 6.7278
+assets/models/de--lorean_xyz.ply
+49.4629 7.25882 -44.9492
+assets/models/de--lorean_xyz.ply
+-37.6675 -39.0072 24.3126
+assets/models/de--lorean_xyz.ply
+20.7999 10.0238 24.7215
+assets/models/de--lorean_xyz.ply
+-38.4396 5.3209 -48.5748
+assets/models/de--lorean_xyz.ply
+-29.8059 19.6219 -20.9647
+assets/models/de--lorean_xyz.ply
+46.3042 19.5761 42.4802
+assets/models/de--lorean_xyz.ply
+12.5172 -40.5606 -6.2273
+assets/models/de--lorean_xyz.ply
+-29.8029 12.8071 10.4144
+assets/models/de--lorean_xyz.ply
+22.0908 6.57521 -12.4866
+assets/models/de--lorean_xyz.ply
+19.8508 8.46125 -14.8701
+assets/models/de--lorean_xyz.ply
+-35.0887 7.60368 36.7733
+assets/models/de--lorean_xyz.ply
+6.92007 -19.4174 -32.6075
+assets/models/de--lorean_xyz.ply
+-42.3399 14.098 32.0002
+assets/models/de--lorean_xyz.ply
+-17.6962 23.7999 -18.6117
+assets/models/de--lorean_xyz.ply
+-43.4263 28.4967 2.45826
+assets/models/de--lorean_xyz.ply
+0.505077 -27.2912 -20.9708
+assets/models/de--lorean_xyz.ply
+29.3359 0.926235 -11.7634
+assets/models/de--lorean_xyz.ply
+12.3066 36.3247 -0.849941
+assets/models/de--lorean_xyz.ply
+13.0848 -32.342 -12.5752
+assets/models/de--lorean_xyz.ply
+13.921 -36.8374 34.7072
+assets/models/de--lorean_xyz.ply
+11.7145 -28.2434 -43.4049
+assets/models/de--lorean_xyz.ply
+30.6879 2.65358 11.1103
+assets/models/de--lorean_xyz.ply
+35.519 -43.3836 -7.21915
+assets/models/de--lorean_xyz.ply
+-36.5291 -21.5751 28.811
+assets/models/de--lorean_xyz.ply
+36.3582 -27.0562 -25.045
+assets/models/de--lorean_xyz.ply
+-24.1203 39.1537 -26.7235
+assets/models/de--lorean_xyz.ply
+41.4701 -10.1398 -6.7217
+assets/models/de--lorean_xyz.ply
+-49.5666 2.55898 45.4802
+assets/models/de--lorean_xyz.ply
+39.0225 -49.2828 44.0977
+assets/models/de--lorean_xyz.ply
+-8.20795 -41.7753 15.9932
+assets/models/de--lorean_xyz.ply
+18.5629 -35.7234 18.9505
+assets/models/de--lorean_xyz.ply
+5.19883 44.7905 -44.1221
+assets/models/de--lorean_xyz.ply
+19.454 -28.1365 -34.4081
+assets/models/de--lorean_xyz.ply
+28.2098 -32.8211 47.4395
+assets/models/de--lorean_xyz.ply
+-9.52941 -18.8864 49.2615
+assets/models/de--lorean_xyz.ply
+43.9085 -30.4346 27.9656
+assets/models/de--lorean_xyz.ply
+13.6341 6.95364 -7.79596
+assets/models/de--lorean_xyz.ply
+-46.3378 29.5251 -30.3491
+assets/models/de--lorean_xyz.ply
+-4.5671 10.4297 19.7348
+assets/models/de--lorean_xyz.ply
+37.6003 -10.8295 48.7457
+assets/models/de--lorean_xyz.ply
+-21.4438 -23.9799 -9.23643
+assets/models/de--lorean_xyz.ply
+-19.1397 -11.1896 7.0574
+assets/models/de--lorean_xyz.ply
+-22.7409 18.0441 41.113
+assets/models/de--lorean_xyz.ply
+-6.14796 18.7643 -40.9574
+assets/models/de--lorean_xyz.ply
+-10.5152 -43.2157 17.5741
+assets/models/de--lorean_xyz.ply
+4.53658 -45.0377 47.4578
+assets/models/de--lorean_xyz.ply
+-11.1377 -45.0041 30.9778
+assets/models/de--lorean_xyz.ply
+-49.0844 -6.01368 0.785851
+assets/models/de--lorean_xyz.ply
+49.7284 -44.6532 6.28529
+assets/models/de--lorean_xyz.ply
+-48.1384 -46.8963 -4.42976
+assets/models/de--lorean_xyz.ply
+8.25983 9.50193 -42.0988
+assets/models/de--lorean_xyz.ply
+-15.6423 -48.9776 -23.2688
+assets/models/de--lorean_xyz.ply
+12.8925 39.3948 -31.6981
+assets/models/de--lorean_xyz.ply
+45.3398 34.8811 39.0347
+assets/models/de--lorean_xyz.ply
+-32.9066 21.3889 -1.90588
+assets/models/de--lorean_xyz.ply
+26.2047 -30.813 22.7775
+assets/models/de--lorean_xyz.ply
+17.6626 33.8923 5.66576
+assets/models/de--lorean_xyz.ply
+-21.8253 -47.7111 26.9219
+assets/models/de--lorean_xyz.ply
+-8.34834 -40.933 4.51826
+assets/models/de--lorean_xyz.ply
+-3.42265 -24.0013 -7.31987
+assets/models/de--lorean_xyz.ply
+35.0551 -20.6992 36.4376
+assets/models/de--lorean_xyz.ply
+2.1958 -5.98315 -39.2361
+assets/models/de--lorean_xyz.ply
+-43.6277 -41.0184 -11.4338
+assets/models/de--lorean_xyz.ply
+47.8423 14.7633 -44.6348
+assets/models/de--lorean_xyz.ply
+28.1884 -47.7172 32.6044
+assets/models/de--lorean_xyz.ply
+28.2159 -15.746 -1.93945
+assets/models/de--lorean_xyz.ply
+49.8749 27.5506 14.1652
+assets/models/de--lorean_xyz.ply
+21.2363 -25.3563 4.6678
+assets/models/de--lorean_xyz.ply
+24.5537 48.8922 -29.5373
+assets/models/de--lorean_xyz.ply
+38.934 44.0397 -31.7072
+assets/models/de--lorean_xyz.ply
+-46.5484 5.63524 4.44807
+assets/models/de--lorean_xyz.ply
+16.0237 -16.7562 -18.4042
+assets/models/de--lorean_xyz.ply
+0.764488 30.2728 -6.49281
+assets/models/de--lorean_xyz.ply
+14.333 15.0594 1.4481
+assets/models/de--lorean_xyz.ply
+32.1223 -4.52132 -39.1324
+assets/models/de--lorean_xyz.ply
+-28.872 -38.3084 9.1113
+assets/models/de--lorean_xyz.ply
+-20.1498 30.8863 -12.1815
+assets/models/de--lorean_xyz.ply
+-30.4376 46.0143 -30.9748
+assets/models/de--lorean_xyz.ply
+38.1039 -49.823 -5.13779
+assets/models/de--lorean_xyz.ply
+-40.7254 42.2025 39.3826
+assets/models/de--lorean_xyz.ply
+40.9909 29.1986 -30.0378
+assets/models/de--lorean_xyz.ply
+5.33616 41.4212 37.5546
+assets/models/de--lorean_xyz.ply
+26.8578 25.6188 -28.0267
+assets/models/de--lorean_xyz.ply
+-6.37379 48.1719 13.5548
+assets/models/de--lorean_xyz.ply
+41.7997 -19.1275 -12.6179
+assets/models/de--lorean_xyz.ply
+-29.1986 -27.0623 34.6156
+assets/models/de--lorean_xyz.ply
+-14.4093 -5.0737 -31.4936
+assets/models/de--lorean_xyz.ply
+46.9329 36.7428 34.0205
+assets/models/de--lorean_xyz.ply
+-46.9115 14.5039 31.2708
+assets/models/de--lorean_xyz.ply
+38.9676 -46.7833 27.3492
+assets/models/de--lorean_xyz.ply
+-25.7134 25.4479 40.6522
+assets/models/de--lorean_xyz.ply
+-16.8386 3.89264 49.179
+assets/models/de--lorean_xyz.ply
+6.12964 -10.213 -38.0215
+assets/models/de--lorean_xyz.ply
+-5.44298 -27.7886 13.4754
+assets/models/de--lorean_xyz.ply
+-20.8029 18.1661 6.1449
+assets/models/de--lorean_xyz.ply
+1.65258 -47.9919 -49.3011
+assets/models/de--lorean_xyz.ply
+-47.5829 18.2424 46.9085
+assets/models/de--lorean_xyz.ply
+34.4233 -3.99335 24.8161
+assets/models/de--lorean_xyz.ply
+-21.1173 9.68505 38.3877
+assets/models/de--lorean_xyz.ply
+-6.25782 19.9637 -16.7043
+assets/models/de--lorean_xyz.ply
+35.9523 46.411 10.8814
+assets/models/de--lorean_xyz.ply
+-19.573 28.1518 43.289
+assets/models/de--lorean_xyz.ply
+22.7134 36.6604 -26.8914
+assets/models/de--lorean_xyz.ply
+11.919 -24.3065 -33.0164
+assets/models/de--lorean_xyz.ply
+-22.0267 1.55492 -0.94455
+assets/models/de--lorean_xyz.ply
+4.83566 33.4925 29.4427
+assets/models/de--lorean_xyz.ply
+21.8772 -37.2372 27.4895
+assets/models/de--lorean_xyz.ply
+-48.5534 -28.7225 31.8537
+assets/models/de--lorean_xyz.ply
+-25.7378 -0.123604 -47.6989
+assets/models/de--lorean_xyz.ply
+-31.7896 24.4896 -36.5261
+assets/models/de--lorean_xyz.ply
+-47.0763 -31.8567 31.8079
+assets/models/de--lorean_xyz.ply
+44.528 -39.4803 -34.6767
+assets/models/de--lorean_xyz.ply
+4.87838 17.1956 -4.90585
+assets/models/de--lorean_xyz.ply
+-30.2057 10.0513 -1.265
+assets/models/de--lorean_xyz.ply
+-26.2474 1.35654 -26.4183
+assets/models/de--lorean_xyz.ply
+-33.0775 -20.983 -28.0725
+assets/models/de--lorean_xyz.ply
+-43.5575 22.1763 35.9065
+assets/models/de--lorean_xyz.ply
+10.4053 6.86819 27.7367
+assets/models/de--lorean_xyz.ply
+-47.8576 -6.16322 -45.7854
+assets/models/de--lorean_xyz.ply
+-42.8983 -13.2496 45.5535
+assets/models/de--lorean_xyz.ply
+-43.1089 -27.987 -19.9088
+assets/models/de--lorean_xyz.ply
+-32.1741 13.2282 -39.3094
+assets/models/de--lorean_xyz.ply
+6.75832 36.8496 -41.879
+assets/models/de--lorean_xyz.ply
+47.8881 -26.8487 -45.7701
+assets/models/de--lorean_xyz.ply
+22.7561 -29.3512 -44.705
+assets/models/de--lorean_xyz.ply
+-15.3035 45.352 16.512
+assets/models/de--lorean_xyz.ply
+-39.3277 20.9342 34.3806
+assets/models/de--lorean_xyz.ply
+10.5823 24.691 37.3836
+assets/models/de--lorean_xyz.ply
+18.9047 -10.5365 49.3194
+assets/models/de--lorean_xyz.ply
+-31.0999 36.2209 26.3298
+assets/models/de--lorean_xyz.ply
+7.39006 37.8658 -9.12961
+assets/models/de--lorean_xyz.ply
+11.626 -45.056 15.6056
+assets/models/de--lorean_xyz.ply
+30.8405 -49.5148 -39.4742
+assets/models/de--lorean_xyz.ply
+6.4684 -3.09305 49.5117
+assets/models/de--lorean_xyz.ply
+-10.6616 45.1048 0.914028
+assets/models/de--lorean_xyz.ply
+-18.273 -2.81839 12.9139
+assets/models/de--lorean_xyz.ply
+49.4415 -27.9046 -39.2666
+assets/models/de--lorean_xyz.ply
+-13.0573 40.3989 2.17139
+assets/models/de--lorean_xyz.ply
+-11.0889 -7.25272 22.4174
+assets/models/de--lorean_xyz.ply
+-2.49794 -40.5606 -8.47041
+assets/models/de--lorean_xyz.ply
+-31.7713 -22.7714 -29.4061
+assets/models/de--lorean_xyz.ply
+41.2992 -32.0734 -1.80822
+assets/models/de--lorean_xyz.ply
+31.9636 12.9902 29.5068
+assets/models/de--lorean_xyz.ply
+-24.3828 42.1049 -0.874359
+assets/models/de--lorean_xyz.ply
+-6.84683 -35.9279 47.4975
+assets/models/de--lorean_xyz.ply
+-7.68609 17.7938 2.74208
+assets/models/de--lorean_xyz.ply
+3.8377 -27.9321 -43.3256
+assets/models/de--lorean_xyz.ply
+-20.5618 17.983 28.6126
+assets/models/de--lorean_xyz.ply
+-35.168 39.2758 -14.0584
+assets/models/de--lorean_xyz.ply
+17.4642 -23.2902 -1.71667
+assets/models/de--lorean_xyz.ply
+-22.1213 -15.2821 -44.586
+assets/models/de--lorean_xyz.ply
+38.1619 -25.1183 -9.61791
+assets/models/de--lorean_xyz.ply
+-6.66677 13.6463 30.4559
+assets/models/de--lorean_xyz.ply
+24.3217 -46.3958 -36.9167
+assets/models/de--lorean_xyz.ply
+-43.5545 -8.87326 -36.6298
+assets/models/de--lorean_xyz.ply
+-21.5568 20.6961 -2.90689
+assets/models/de--lorean_xyz.ply
+5.43992 -39.6359 0.956753
+assets/models/de--lorean_xyz.ply
+38.4365 15.9719 -37.7468
+assets/models/de--lorean_xyz.ply
+24.4346 -3.61492 -14.0339
+assets/models/de--lorean_xyz.ply
+-31.4295 -49.0295 -39.0744
+assets/models/de--lorean_xyz.ply
+4.40535 35.6777 30.6635
+assets/models/de--lorean_xyz.ply
+3.72478 -11.3117 -48.7609
+assets/models/de--lorean_xyz.ply
+15.273 -27.5536 -9.44395
+assets/models/de--lorean_xyz.ply
+-24.9229 -21.0044 3.35246
+assets/models/de--lorean_xyz.ply
+42.23 -37.9025 16.4724
+assets/models/de--lorean_xyz.ply
+-4.62508 15.3432 -8.14997
+assets/models/de--lorean_xyz.ply
+-10.5304 22.57 13.0604
+assets/models/de--lorean_xyz.ply
+31.8964 28.3715 -22.6066

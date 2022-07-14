@@ -1,9 +1,9 @@
 5
-assets/models/cow_xyz_only.ply
-assets/models/bun_zipper.xyz.ply
-assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply
-assets/models/Seafloor2_xyz.ply
-assets/models/de--lorean_xyz.ply
+assets/models/cow_xyz_n_rgba_uv.ply
+assets/models/bun_zipper.xyz_n_rgba_uv.ply
+assets/models/spider_mastermind.bmd6model.fbx.ascii_xyz_n_rgba_uv.ply
+assets/models/Seafloor2_xyz_n_rgba_uv.ply
+assets/models/de--lorean_xyz_n_rgba_uv.ply
 2
 assets/models/cow_xyz_only.ply
 10.5   6.4   -141.5

@@ -20,3 +20,8 @@ bool LoadAllTheModels(std::string sceneFileName,
 					  cVAOManager* pVAOManager,
 					  unsigned int shaderProgramID,
 					  std::string& error);
+
+bool SaveSceneToFile(std::string sceneFileName);
+
+
+float getRandBetween(float M, float N);

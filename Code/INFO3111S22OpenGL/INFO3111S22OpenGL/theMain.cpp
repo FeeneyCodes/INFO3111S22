@@ -97,6 +97,37 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     }
     else
     {
+        // NO modifier keys are pressed
+
+        // When we press #8, a DeLorean is added to the scene
+        if (key == GLFW_KEY_8)
+        {
+            cMesh* pDeLorean = new cMesh();
+            pDeLorean->meshFileName = "assets/models/de--lorean_xyz.ply";
+            pDeLorean->bIsWireframe = true;
+            pDeLorean->orientationEulerAngle.x = getRandBetween(-3.14159f, 3.14159f);
+            pDeLorean->orientationEulerAngle.y = getRandBetween(-3.14159f, 3.14159f);
+            pDeLorean->orientationEulerAngle.z = getRandBetween(-3.14159f, 3.14159f);
+            // Maybe random colours, too
+            pDeLorean->RGBA.r = getRandBetween(0.0f, 1.0f);
+            pDeLorean->RGBA.g = getRandBetween(0.0f, 1.0f);
+            pDeLorean->RGBA.b = getRandBetween(0.0f, 1.0f);
+            pDeLorean->overallScale = getRandBetween(0.1f, 1.0f);
+            pDeLorean->XYZLocation.x = getRandBetween(-50.0f, 50.0f);
+            pDeLorean->XYZLocation.y = getRandBetween(-50.0f, 50.0f);
+            pDeLorean->XYZLocation.z = getRandBetween(-50.0f, 50.0f);
+            ::g_vec_pMeshesToDraw.push_back(pDeLorean);
+        }
+
+        // Saves the scene to a file
+        if ( key == GLFW_KEY_9 && action == GLFW_PRESS )
+        {
+            SaveSceneToFile("MyAmazingScene.txt");
+            std::cout << "Saved info. to file" << std::endl;
+        }
+
+
+
         // Camera control
         if ( key == GLFW_KEY_A )
         {
@@ -326,7 +357,7 @@ int main(void)
     pSpider1->XYZLocation.x = -5.07f;
     pSpider1->orientationEulerAngle.x = glm::radians(-90.0f);
     pSpider1->RGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-    pSpider1->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply";
+    pSpider1->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pSpider1);
 
     cMesh* pSpider2 = new cMesh();
@@ -334,7 +365,7 @@ int main(void)
     pSpider2->XYZLocation.y = 2.0f;
     pSpider2->RGBA = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
     pSpider2->bIsWireframe = true;      // glPolygonMode() will be GL_LINE
-    pSpider2->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii.xyz.ply";
+    pSpider2->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pSpider2);
 
     cMesh* pCow = new cMesh();
@@ -342,18 +373,19 @@ int main(void)
     pCow->orientationEulerAngle.y = glm::radians(-145.0f);
     pCow->overallScale = 0.5f;
     pCow->RGBA = glm::vec4(0.5f, 1.0f, 0.5f, 1.0f);
-    pCow->meshFileName = "assets/models/cow_xyz_only.ply";
+//    pCow->meshFileName = "assets/models/cow_xyz_only.ply";
+    pCow->meshFileName = "assets/models/cow_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pCow);
 
     cMesh* pSeaFloor = new cMesh();
     pSeaFloor->XYZLocation.y = -15.0f;
     // https://www.colorhexa.com/c2b280
     pSeaFloor->RGBA = glm::vec4(76.0f/255.0f, 70.0f/255.0f, 50.0f/255.0f, 1.0f);
-    pSeaFloor->meshFileName = "assets/models/Seafloor2_xyz.ply";
+    pSeaFloor->meshFileName = "assets/models/Seafloor2_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pSeaFloor);
 
     cMesh* pDeLorean = new cMesh();
-    pDeLorean->meshFileName = "assets/models/de--lorean_xyz.ply";
+    pDeLorean->meshFileName = "assets/models/de--lorean_xyz_n_rgba_uv.ply";
     pDeLorean->bIsWireframe = true;
     pDeLorean->orientationEulerAngle.x = glm::radians(-90.0f);
     pDeLorean->overallScale = 0.5f;
@@ -379,7 +411,7 @@ int main(void)
 
         glViewport(0, 0, width, height);
 //        glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(0.0f, 0.3f, 1.0f, 1.0f);       // Clear screen to blue colour
+        glClearColor(0.0f, 0.3f, 3.0f, 1.0f);       // Clear screen to blue colour
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
