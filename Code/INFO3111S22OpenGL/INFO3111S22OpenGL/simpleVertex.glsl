@@ -21,6 +21,7 @@ out vec4 fColour;
 out vec4 fNormal;
 out vec4 fUV_x2;
 out vec4 vertexWorldPosition;
+out mat4 matModelInvTrans;		// Used for lighting
 
 void main()
 {
@@ -42,8 +43,8 @@ void main()
 	// The inverse transpose of the model matrix removes
 	//	any tranlation (movement) and scaling transformations
 	// (leaving only rotation)
-	mat4 mModelIT = inverse(transpose(mModel));
-    fNormal = mModel * vec4(normalize(vNormal.xyz), 1.0);
+	mat4 matModelInvTrans = inverse(transpose(mModel));
+    fNormal = matModelInvTrans * vec4(normalize(vNormal.xyz), 1.0);
 	
    
     // These are just being passed unchanged

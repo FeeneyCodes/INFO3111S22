@@ -149,6 +149,7 @@
     <ClInclude Include="cShaderManager.h" />
     <ClInclude Include="cVAOManager.h" />
     <ClInclude Include="globalStuff.h" />
+    <ClInclude Include="cLightManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="simpleFragment.glsl" />

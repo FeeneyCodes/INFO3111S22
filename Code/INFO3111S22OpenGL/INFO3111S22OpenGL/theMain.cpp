@@ -22,15 +22,25 @@
 
 #include "cShaderManager.h"
 #include "cVAOManager.h"
+#include "cLightManager.h"
 
 
+void PlaceAModelInARandomLocation(std::string modelName, float minScale, float maxScale);
 
+void CopyLightInformationToShader(cLightManager* pTheLightManager, GLuint shaderID);
 
 //struct sVertex
 //{
 //    float x, y, z;      // vPos  NOW WITH MORE Z!
 //    float r, g, b;      // vCol
 //};
+// 
+// See globalStuff.h for declaration
+std::vector< cMesh* > g_vec_pMeshesToDraw;
+
+cMesh* pMeshSphere = NULL;
+
+cLightManager* pTheLightManager = NULL;
 
 
 glm::vec3 g_cameraEye = glm::vec3(0.0, 0.0, -4.0f);
@@ -62,8 +72,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 //        -------
 //        0000001
 
-    const float cameraMovementSpeed = 0.1f;
-    const float objectMovementSpeed = 0.1f;
+    const float cameraMovementSpeed = 1.0f;
+    const float objectMovementSpeed = 0.5f;
     const float objectRotationSpeed = glm::radians(1.0f);
 
     // Nudge, nudge, wink, wink - Hey, why not change this value with some other keys...
@@ -95,28 +105,39 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         if (key == GLFW_KEY_Q) { ::g_vec_pMeshesToDraw[objectIDToMove]->orientationEulerAngle.y -= objectRotationSpeed; }
         if (key == GLFW_KEY_E) { ::g_vec_pMeshesToDraw[objectIDToMove]->orientationEulerAngle.y += objectRotationSpeed; }
     }
+    else if (mods == GLFW_MOD_ALT)
+    {
+        // Move the object
+        if (key == GLFW_KEY_A) { pMeshSphere->XYZLocation.x -= objectMovementSpeed; }
+        if (key == GLFW_KEY_D) { pMeshSphere->XYZLocation.x += objectMovementSpeed; }
+        if (key == GLFW_KEY_W) { pMeshSphere->XYZLocation.z -= objectMovementSpeed; }
+        if (key == GLFW_KEY_S) { pMeshSphere->XYZLocation.z += objectMovementSpeed; }
+        if (key == GLFW_KEY_Q) { pMeshSphere->XYZLocation.y -= objectMovementSpeed; }
+        if (key == GLFW_KEY_E) { pMeshSphere->XYZLocation.y += objectMovementSpeed; }
+
+        // Linear attenuation
+        if (key == GLFW_KEY_1) {
+            pTheLightManager->theLights[0].atten.y *= 0.99f;
+        }
+        if (key == GLFW_KEY_2) {
+            pTheLightManager->theLights[0].atten.y *= 1.01f;
+        }
+        // Quadradic attenuation
+        if (key == GLFW_KEY_3) {
+            pTheLightManager->theLights[0].atten.z *= 0.99f;
+        }
+        if (key == GLFW_KEY_4) {
+            pTheLightManager->theLights[0].atten.z *= 1.01f;
+        }
+    }
     else
     {
         // NO modifier keys are pressed
 
-        // When we press #8, a DeLorean is added to the scene
+        // When we press #8, a airplane is added to the scene
         if (key == GLFW_KEY_8)
         {
-            cMesh* pDeLorean = new cMesh();
-            pDeLorean->meshFileName = "assets/models/mig29_xyz_n_rgba_uv.ply";
-            pDeLorean->bIsWireframe = true;
-            pDeLorean->orientationEulerAngle.x = getRandBetween(-3.14159f, 3.14159f);
-            pDeLorean->orientationEulerAngle.y = getRandBetween(-3.14159f, 3.14159f);
-            pDeLorean->orientationEulerAngle.z = getRandBetween(-3.14159f, 3.14159f);
-            // Maybe random colours, too
-            pDeLorean->RGBA.r = getRandBetween(0.0f, 1.0f);
-            pDeLorean->RGBA.g = getRandBetween(0.0f, 1.0f);
-            pDeLorean->RGBA.b = getRandBetween(0.0f, 1.0f);
-            pDeLorean->overallScale = getRandBetween(0.1f, 1.0f);
-            pDeLorean->XYZLocation.x = getRandBetween(-50.0f, 50.0f);
-            pDeLorean->XYZLocation.y = getRandBetween(-50.0f, 50.0f);
-            pDeLorean->XYZLocation.z = getRandBetween(-50.0f, 50.0f);
-            ::g_vec_pMeshesToDraw.push_back(pDeLorean);
+            PlaceAModelInARandomLocation("assets/models/mig29_xyz_n_rgba_uv.ply", 1.0f, 5.0f);
         }
 
         // Saves the scene to a file
@@ -168,8 +189,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 // sVertex* pVertices;
 // unsigned int numberOfVerticesLoaded;
 
-// See globalStuff.h for declaration
-std::vector< cMesh* > g_vec_pMeshesToDraw;
 
 
 int main(void)
@@ -353,6 +372,14 @@ int main(void)
 //   pCow->meshFileName = "assets/models/cow_xyz_only.ply";
 //   ::g_vec_pMeshesToDraw.push_back(pCow);
 
+    pMeshSphere = new cMesh();
+    pMeshSphere->RGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    pMeshSphere->XYZLocation = glm::vec3(0.0f, 15.0f, 0.0f);
+    pMeshSphere->meshFileName = "assets/models/Isoshphere_flat_4div_xyz_n_rgba_uv.ply";
+    pMeshSphere->bIsWireframe = true;
+    ::g_vec_pMeshesToDraw.push_back(pMeshSphere);
+
+
     cMesh* pSpider1 = new cMesh();
     pSpider1->XYZLocation.x = -5.07f;
     pSpider1->orientationEulerAngle.x = glm::radians(-137.5f);
@@ -386,6 +413,12 @@ int main(void)
     pSeaFloor->meshFileName = "assets/models/Seafloor2_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pSeaFloor);
 
+    // Make a bunch of airplanes
+    for (unsigned int count = 0; count != 1000; count++)
+    {
+        PlaceAModelInARandomLocation("assets/models/mig29_xyz_n_rgba_uv.ply", 1.0f, 5.0f);
+    }
+
     //cMesh* pDeLorean = new cMesh();
     //pDeLorean->meshFileName = "assets/models/de--lorean_xyz_n_rgba_uv.ply";
     //pDeLorean->bIsWireframe = true;
@@ -393,6 +426,19 @@ int main(void)
     //pDeLorean->overallScale = 0.5f;
     //pDeLorean->XYZLocation.x = -10.0f;
     //::g_vec_pMeshesToDraw.push_back(pDeLorean);
+
+
+    pTheLightManager = new cLightManager();
+
+    pTheLightManager->theLights[0].position = glm::vec4(pMeshSphere->XYZLocation, 1.0f);
+//    pTheLightManager->theLights[0].position = glm::vec4(0.0f, 15.0f, 0.0f, 1.0f);
+    pTheLightManager->theLights[0].diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+    pTheLightManager->theLights[0].atten.x = 0.0f;  // Constant
+    pTheLightManager->theLights[0].atten.y = 0.05f;  // Linear attenuation
+    pTheLightManager->theLights[0].atten.z = 0.01f;  // Quadratic attenuation
+
+    pTheLightManager->theLights[0].param2.x = 1.0f;  // Turn the light on
 
 
 
@@ -439,6 +485,14 @@ int main(void)
 
 
 //        ::g_vec_pMeshesToDraw[4]->XYZLocation.z += 0.01f;
+
+        // Place the light wherever the ball is...
+        pTheLightManager->theLights[0].position = glm::vec4(pMeshSphere->XYZLocation, 1.0f);
+
+
+        // Copy the lighting information to the shader
+        CopyLightInformationToShader(pTheLightManager, shaderProgramNumber);
+
 
 
         // Loop through the mesh objects in the scene, drawing each one
@@ -569,6 +623,7 @@ int main(void)
     // Clean up
     delete pShaderManager;
     delete pVAOManager;
+    delete pTheLightManager;
 
     glfwTerminate();
     //exit(EXIT_SUCCESS);
@@ -579,12 +634,82 @@ int main(void)
 
 
 
+void PlaceAModelInARandomLocation(std::string modelName, float minScale, float maxScale)
+{
+    cMesh* pDeLorean = new cMesh();
+    pDeLorean->meshFileName = modelName;// "assets/models/mig29_xyz_n_rgba_uv.ply";
+//    pDeLorean->bIsWireframe = true;
+    pDeLorean->orientationEulerAngle.x = getRandBetween(-3.14159f, 3.14159f);
+    pDeLorean->orientationEulerAngle.y = getRandBetween(-3.14159f, 3.14159f);
+    pDeLorean->orientationEulerAngle.z = getRandBetween(-3.14159f, 3.14159f);
+    // Maybe random colours, too
+    pDeLorean->RGBA.r = getRandBetween(0.0f, 1.0f);
+    pDeLorean->RGBA.g = getRandBetween(0.0f, 1.0f);
+    pDeLorean->RGBA.b = getRandBetween(0.0f, 1.0f);
+    pDeLorean->overallScale = getRandBetween(minScale, maxScale);
+    pDeLorean->XYZLocation.x = getRandBetween(-100.0f, 100.0f);
+    pDeLorean->XYZLocation.y = getRandBetween(-100.0f, 100.0f);
+    pDeLorean->XYZLocation.z = getRandBetween(-100.0f, 100.0f);
+    ::g_vec_pMeshesToDraw.push_back(pDeLorean);
+    return;
+}
 
 
 
 
+void CopyLightInformationToShader(cLightManager* pTheLightManager, GLuint shaderID)
+{
+    GLint position_UniLoc = glGetUniformLocation(shaderID, "theLights[0].position");
+    glUniform4f(position_UniLoc,
+                pTheLightManager->theLights[0].position.x,
+                pTheLightManager->theLights[0].position.y,
+                pTheLightManager->theLights[0].position.z,
+                pTheLightManager->theLights[0].position.w);
 
+    GLint diffuse_UniLoc = glGetUniformLocation(shaderID, "theLights[0].diffuse");
+    glUniform4f(diffuse_UniLoc,
+                pTheLightManager->theLights[0].diffuse.r,
+                pTheLightManager->theLights[0].diffuse.g,
+                pTheLightManager->theLights[0].diffuse.b,
+                pTheLightManager->theLights[0].diffuse.a);
 
+    GLint specular_UniLoc = glGetUniformLocation(shaderID, "theLights[0].specular");
+    glUniform4f(specular_UniLoc,
+                pTheLightManager->theLights[0].specular.r,
+                pTheLightManager->theLights[0].specular.g,
+                pTheLightManager->theLights[0].specular.b,
+                pTheLightManager->theLights[0].specular.a);
+
+    GLint atten_UniLoc = glGetUniformLocation(shaderID, "theLights[0].atten");
+    glUniform4f(atten_UniLoc,
+                pTheLightManager->theLights[0].atten.r,
+                pTheLightManager->theLights[0].atten.g,
+                pTheLightManager->theLights[0].atten.b,
+                pTheLightManager->theLights[0].atten.a);
+
+    GLint direction_UniLoc = glGetUniformLocation(shaderID, "theLights[0].direction");
+    glUniform4f(direction_UniLoc,
+                pTheLightManager->theLights[0].direction.r,
+                pTheLightManager->theLights[0].direction.g,
+                pTheLightManager->theLights[0].direction.b,
+                pTheLightManager->theLights[0].direction.a);
+
+    GLint param1_UniLoc = glGetUniformLocation(shaderID, "theLights[0].param1");
+    glUniform4f(param1_UniLoc,
+                pTheLightManager->theLights[0].param1.x,
+                pTheLightManager->theLights[0].param1.y,
+                pTheLightManager->theLights[0].param1.z,
+                pTheLightManager->theLights[0].param1.w);
+
+    GLint param2_UniLoc = glGetUniformLocation(shaderID, "theLights[0].param2");
+    glUniform4f(param2_UniLoc,
+                pTheLightManager->theLights[0].param2.x,
+                pTheLightManager->theLights[0].param2.y,
+                pTheLightManager->theLights[0].param2.z,
+                pTheLightManager->theLights[0].param2.w);
+
+    return;
+}
 
 
 
