@@ -7,15 +7,24 @@ uniform mat4 mProj;
 
 uniform vec4 objectColourRGBA;		
 
-in vec3 vPos;	// vec2 = x,y  vec3 = x,y,z
-in vec3 vCol;
+//in vec3 vPos;	// vec2 = x,y  vec3 = x,y,z
+//in vec3 vCol;
 
-out vec3 color;
+// This mirrors the sVert_n_rgba_uv struct in the C++ side
+in vec4 vPosition;
+in vec4 vRGBA; 
+in vec4 vNormal;
+in vec4 vUV_x2;
+
+// To the pixel fragment shader
+out vec4 fColour;
+out vec4 fNormal;
+out vec4 fUV_x2;
 out vec4 vertexWorldPosition;
 
 void main()
 {
-    vec3 vFinalPosition = vPos;
+    vec3 vFinalPosition = vPosition.xyz;
 
 //    vFinalPosition.x -= 1.75f;
 
@@ -28,8 +37,17 @@ void main()
     gl_Position = mMVP * vec4(vFinalPosition, 1.0);
 
 	vertexWorldPosition = mModel * vec4(vFinalPosition, 1.0);
-//    color = vCol;
 
-   color = objectColourRGBA.rgb;
+	// Also rotate the normal with the model matrix
+	// The inverse transpose of the model matrix removes
+	//	any tranlation (movement) and scaling transformations
+	// (leaving only rotation)
+	mat4 mModelIT = inverse(transpose(mModel));
+    fNormal = mModel * vec4(normalize(vNormal.xyz), 1.0);
+	
+   
+    // These are just being passed unchanged
+    fColour = objectColourRGBA;
+    fUV_x2 = vUV_x2;
 	
 }

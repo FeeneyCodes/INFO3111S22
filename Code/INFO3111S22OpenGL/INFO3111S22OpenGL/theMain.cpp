@@ -103,7 +103,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         if (key == GLFW_KEY_8)
         {
             cMesh* pDeLorean = new cMesh();
-            pDeLorean->meshFileName = "assets/models/de--lorean_xyz.ply";
+            pDeLorean->meshFileName = "assets/models/mig29_xyz_n_rgba_uv.ply";
             pDeLorean->bIsWireframe = true;
             pDeLorean->orientationEulerAngle.x = getRandBetween(-3.14159f, 3.14159f);
             pDeLorean->orientationEulerAngle.y = getRandBetween(-3.14159f, 3.14159f);
@@ -358,15 +358,16 @@ int main(void)
     pSpider1->orientationEulerAngle.x = glm::radians(-137.5f);
     pSpider1->orientationEulerAngle.z = glm::radians(+8.14f);
     pSpider1->RGBA = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-    pSpider1->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii_xyz_n_rgba_uv.ply";
+    pSpider1->meshFileName = "assets/models/mig29_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pSpider1);
 
     cMesh* pSpider2 = new cMesh();
     pSpider2->XYZLocation.x = +5.0f;
     pSpider2->XYZLocation.y = 2.0f;
     pSpider2->RGBA = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);
-    pSpider2->bIsWireframe = true;      // glPolygonMode() will be GL_LINE
-    pSpider2->meshFileName = "assets/models/spider_mastermind.bmd6model.fbx.ascii_xyz_n_rgba_uv.ply";
+    pSpider2->meshFileName = "assets/models/mig29_xyz_n_rgba_uv.ply";
+    pSpider2->overallScale = 3.0f;
+//    pSpider2->bIsWireframe = true;      // glPolygonMode() will be GL_LINE
     ::g_vec_pMeshesToDraw.push_back(pSpider2);
 
     cMesh* pCow = new cMesh();
@@ -385,13 +386,13 @@ int main(void)
     pSeaFloor->meshFileName = "assets/models/Seafloor2_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pSeaFloor);
 
-    cMesh* pDeLorean = new cMesh();
-    pDeLorean->meshFileName = "assets/models/de--lorean_xyz_n_rgba_uv.ply";
-    pDeLorean->bIsWireframe = true;
-    pDeLorean->orientationEulerAngle.x = glm::radians(-90.0f);
-    pDeLorean->overallScale = 0.5f;
-    pDeLorean->XYZLocation.x = -10.0f;
-    ::g_vec_pMeshesToDraw.push_back(pDeLorean);
+    //cMesh* pDeLorean = new cMesh();
+    //pDeLorean->meshFileName = "assets/models/de--lorean_xyz_n_rgba_uv.ply";
+    //pDeLorean->bIsWireframe = true;
+    //pDeLorean->orientationEulerAngle.x = glm::radians(-90.0f);
+    //pDeLorean->overallScale = 0.5f;
+    //pDeLorean->XYZLocation.x = -10.0f;
+    //::g_vec_pMeshesToDraw.push_back(pDeLorean);
 
 
 

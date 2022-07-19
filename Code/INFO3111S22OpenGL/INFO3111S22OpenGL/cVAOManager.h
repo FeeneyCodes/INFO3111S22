@@ -12,12 +12,29 @@
 // This is also called the 'vertex layout'. 
 // This means that if the shader vertex layout changed, this
 //  vertex structure will also need to change (usually). 
-struct sVert
+//struct sVert
+//{
+//	float x, y, z;		// added "z"
+//	float r, g, b;
+//};
+// ** NOW, we need to pass normals (and soon texture coords) to the shader as well
+// Since all GPU regusters are vec4, we're going to make them all vec4s even if we 
+// don't use all 4. 
+struct sVert_n_rgba_uv
 {
-	float x, y, z;		// added "z"
-	float r, g, b;
+	float x, y, z, w;		// xyz w, 
+	float r, g, b, a;		// rgb, the 4th is a
+	float nx, ny, nz, nw;	// Ignore the 4th value
+	float u1, v1, u2, v2;	// To make this 4 values
 };
 
+//struct sVertexPlyFileFormat
+//{
+//	glm::vec3 pos;
+//	glm::vec3 normal;
+//	glm::vec4 colourRGBA;
+//	glm::vec2 textureCoords;  "st" or "uv"
+//};
 
 // This represents a single mesh (3D object) structure in 'indexed' format. 
 // Its layout is set up to match how the GPU sees the mesh, rather
@@ -42,7 +59,8 @@ struct sModelDrawInfo
 	unsigned int numberOfTriangles;
 
 	// The "local" (i.e. "CPU side" temporary array)
-	sVert* pVertices;	//  = 0;
+//	sVert* pVertices;	//  = 0;
+	sVert_n_rgba_uv* pVertices;	//  = 0;
 	// The index buffer (CPU side)
 	unsigned int* pIndices;
 };

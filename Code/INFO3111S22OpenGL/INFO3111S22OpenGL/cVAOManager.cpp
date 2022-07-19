@@ -31,11 +31,11 @@ sModelDrawInfo::sModelDrawInfo()
 
 	// You could store the max and min values of the 
 	//  vertices here (determined when you load them):
-	glm::vec3 maxValues;
-	glm::vec3 minValues;
+//	glm::vec3 maxValues;
+//	glm::vec3 minValues;
 
 //	scale = 5.0/maxExtent;		-> 5x5x5
-	float maxExtent;
+//	float maxExtent;
 
 	return;
 }
@@ -86,7 +86,8 @@ bool cVAOManager::LoadModelIntoVAO(
 	glBindBuffer(GL_ARRAY_BUFFER, drawInfo.VertexBufferID);
 	// sVert vertices[3]
 	glBufferData( GL_ARRAY_BUFFER, 
-				  sizeof(sVert) * drawInfo.numberOfVertices,	// ::g_NumberOfVertsToDraw,	// sizeof(vertices), 
+//				  sizeof(sVert) * drawInfo.numberOfVertices,	// ::g_NumberOfVertsToDraw,	// sizeof(vertices), 
+				  sizeof(sVert_n_rgba_uv) * drawInfo.numberOfVertices,	// ::g_NumberOfVertsToDraw,	// sizeof(vertices), 
 				  (GLvoid*) drawInfo.pVertices,							// pVertices,			//vertices, 
 				  GL_STATIC_DRAW );
 
@@ -104,21 +105,59 @@ bool cVAOManager::LoadModelIntoVAO(
 
 	// Set the vertex attributes.
 
-	GLint vpos_location = glGetAttribLocation(shaderProgramID, "vPos");	// program
-	GLint vcol_location = glGetAttribLocation(shaderProgramID, "vCol");	// program;
+//	GLint vpos_location = glGetAttribLocation(shaderProgramID, "vPos");	// program
+//	GLint vcol_location = glGetAttribLocation(shaderProgramID, "vCol");	// program;
+//
+//	// Set the vertex attributes for this shader
+//	glEnableVertexAttribArray(vpos_location);	// vPos
+//	glVertexAttribPointer( vpos_location, 3,		// vPos
+//						   GL_FLOAT, GL_FALSE,
+//						   sizeof(float) * 6, 
+//						   ( void* )0);
+//
+//	glEnableVertexAttribArray(vcol_location);	// vCol
+//	glVertexAttribPointer( vcol_location, 3,		// vCol
+//						   GL_FLOAT, GL_FALSE,
+//						   sizeof(float) * 6, 
+//						   ( void* )( sizeof(float) * 3 ));
 
-	// Set the vertex attributes for this shader
-	glEnableVertexAttribArray(vpos_location);	// vPos
-	glVertexAttribPointer( vpos_location, 3,		// vPos
-						   GL_FLOAT, GL_FALSE,
-						   sizeof(float) * 6, 
-						   ( void* )0);
+	// This is called the "vertex layout" and tells the shader
+	// where it's supposed to find the vertex day
+	GLint vPosition_location = glGetAttribLocation(shaderProgramID, "vPosition");	// program
+	glEnableVertexAttribArray(vPosition_location);	
+	glVertexAttribPointer( vPosition_location, 
+						   4,
+						   GL_FLOAT,
+						   GL_FALSE,
+						   sizeof(sVert_n_rgba_uv),		// How many bytes is the "stride" or size of each vertex
+						   (void*) offsetof(sVert_n_rgba_uv, x) );
 
-	glEnableVertexAttribArray(vcol_location);	// vCol
-	glVertexAttribPointer( vcol_location, 3,		// vCol
-						   GL_FLOAT, GL_FALSE,
-						   sizeof(float) * 6, 
-						   ( void* )( sizeof(float) * 3 ));
+	GLint vRGBA_location = glGetAttribLocation(shaderProgramID, "vRGBA");	// program
+	glEnableVertexAttribArray(vRGBA_location);
+	glVertexAttribPointer(vRGBA_location,
+						   4,
+						   GL_FLOAT,
+						   GL_FALSE,
+						   sizeof(sVert_n_rgba_uv),		// How many bytes is the "stride" or size of each vertex
+						   (void*)offsetof(sVert_n_rgba_uv, r));
+
+	GLint vNormal_location = glGetAttribLocation(shaderProgramID, "vNormal");	// program
+	glEnableVertexAttribArray(vNormal_location);
+	glVertexAttribPointer(vNormal_location,
+						   4,
+						   GL_FLOAT,
+						   GL_FALSE,
+						   sizeof(sVert_n_rgba_uv),		// How many bytes is the "stride" or size of each vertex
+						   (void*)offsetof(sVert_n_rgba_uv, nx));
+
+	GLint vUV_x2_location = glGetAttribLocation(shaderProgramID, "vUV_x2");	// program
+	glEnableVertexAttribArray(vUV_x2_location);
+	glVertexAttribPointer(vUV_x2_location,
+						   4,
+						   GL_FLOAT,
+						   GL_FALSE,
+						   sizeof(sVert_n_rgba_uv),		// How many bytes is the "stride" or size of each vertex
+						   (void*)offsetof(sVert_n_rgba_uv, u1));
 
 	// Now that all the parts are set up, set the VAO to zero
 	glBindVertexArray(0);
@@ -126,8 +165,12 @@ bool cVAOManager::LoadModelIntoVAO(
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glDisableVertexAttribArray(vpos_location);
-	glDisableVertexAttribArray(vcol_location);
+//	glDisableVertexAttribArray(vpos_location);
+//	glDisableVertexAttribArray(vcol_location);
+	glDisableVertexAttribArray(vPosition_location);
+	glDisableVertexAttribArray(vRGBA_location);
+	glDisableVertexAttribArray(vNormal_location);
+	glDisableVertexAttribArray(vUV_x2_location);
 
 
 	// Store the draw information into the map
@@ -285,7 +328,8 @@ bool cVAOManager::m_LoadTheModel(std::string fileName,
 	// - sVertPly was made to match the file format
 	// - sVert was made to match the shader vertex attrib format
 
-	drawInfo.pVertices = new sVert[drawInfo.numberOfVertices];
+//	drawInfo.pVertices = new sVert[drawInfo.numberOfVertices];
+	drawInfo.pVertices = new sVert_n_rgba_uv[drawInfo.numberOfVertices];
 
 	// Optional clear array to zero 
 	//memset( drawInfo.pVertices, 0, sizeof(sVert) * drawInfo.numberOfVertices);
@@ -295,10 +339,26 @@ bool cVAOManager::m_LoadTheModel(std::string fileName,
 		drawInfo.pVertices[index].x = vecTempPlyVerts[index].pos.x;
 		drawInfo.pVertices[index].y = vecTempPlyVerts[index].pos.y;
 		drawInfo.pVertices[index].z = vecTempPlyVerts[index].pos.z;
+		drawInfo.pVertices[index].w = 1.0f;		// this isn't in the ply file
 
 		drawInfo.pVertices[index].r = vecTempPlyVerts[index].colourRGBA.r;
 		drawInfo.pVertices[index].g = vecTempPlyVerts[index].colourRGBA.g;
 		drawInfo.pVertices[index].b = vecTempPlyVerts[index].colourRGBA.b;
+		drawInfo.pVertices[index].a = vecTempPlyVerts[index].colourRGBA.a;
+
+		// Also normals...
+		drawInfo.pVertices[index].nx = vecTempPlyVerts[index].normal.x;
+		drawInfo.pVertices[index].ny = vecTempPlyVerts[index].normal.y;
+		drawInfo.pVertices[index].nz = vecTempPlyVerts[index].normal.z;
+		drawInfo.pVertices[index].nw = 1.0f;	// This isn't in the ply file
+
+		// Also UV (texture) coordinates
+		drawInfo.pVertices[index].u1 = vecTempPlyVerts[index].textureCoords.x;
+		drawInfo.pVertices[index].v1 = vecTempPlyVerts[index].textureCoords.y;
+		drawInfo.pVertices[index].u2 = 0.0f;		// not in the PLY file
+		drawInfo.pVertices[index].v2 = 0.0f;		// Not in the PLY file
+
+
 	}// for ( unsigned int index...
 
 
