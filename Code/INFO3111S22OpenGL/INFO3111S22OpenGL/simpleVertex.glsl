@@ -6,6 +6,10 @@ uniform mat4 mView;
 uniform mat4 mProj;
 
 uniform vec4 objectColourRGBA;		
+// All registers are floats, so pass this as a float or int
+// (i.e. there really isn't a "boolean")
+// 0 = false, non 1 is true
+uniform bool bUseModelFileColours;
 
 //in vec3 vPos;	// vec2 = x,y  vec3 = x,y,z
 //in vec3 vCol;
@@ -48,7 +52,15 @@ void main()
 	
    
     // These are just being passed unchanged
-    fColour = objectColourRGBA;
+	if ( bUseModelFileColours )
+	{
+		fColour = vRGBA;
+	}
+	else
+	{
+		fColour = objectColourRGBA;
+	}
+    
     fUV_x2 = vUV_x2;
 	
 }

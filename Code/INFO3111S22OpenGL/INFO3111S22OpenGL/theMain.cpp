@@ -401,7 +401,8 @@ int main(void)
     pCow->XYZLocation.y = -2.0f;
     pCow->orientationEulerAngle.y = glm::radians(-145.0f);
     pCow->overallScale = 0.5f;
-    pCow->RGBA = glm::vec4(0.5f, 1.0f, 0.5f, 1.0f);
+    pCow->RGBA = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+//    pCow->RGBA = glm::vec4(0.5f, 1.0f, 0.5f, 1.0f);
 //    pCow->meshFileName = "assets/models/cow_xyz_only.ply";
     pCow->meshFileName = "assets/models/cow_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pCow);
@@ -412,6 +413,17 @@ int main(void)
     pSeaFloor->RGBA = glm::vec4(76.0f/255.0f, 70.0f/255.0f, 50.0f/255.0f, 1.0f);
     pSeaFloor->meshFileName = "assets/models/Seafloor2_xyz_n_rgba_uv.ply";
     ::g_vec_pMeshesToDraw.push_back(pSeaFloor);
+
+    cMesh* pssj100 = new cMesh();
+    pssj100->XYZLocation.z = 15.0f;
+    // rgb(244, 136, 78)
+    pssj100->RGBA = glm::vec4(244.0f/255.0f, 136.0f/255.0f, 78.0f/255.0f, 1.0f);
+    pssj100->orientationEulerAngle.y = glm::radians(180.0f);
+    //pssj100->overallScale = 25.0f;
+    pssj100->meshFileName = "assets/models/ssj100_xyz_n_rgba_uv.ply";
+    ::g_vec_pMeshesToDraw.push_back(pssj100);
+
+
 
     // Make a bunch of airplanes
     for (unsigned int count = 0; count != 1000; count++)
@@ -440,6 +452,13 @@ int main(void)
 
     pTheLightManager->theLights[0].param2.x = 1.0f;  // Turn the light on
 
+    pTheLightManager->theLights[0].diffuse.r = 1.0f;
+    pTheLightManager->theLights[0].diffuse.g = 1.0f;
+    pTheLightManager->theLights[0].diffuse.b = 1.0f;
+
+
+    GLint UseModelFileColour_UL = glGetUniformLocation(shaderProgramNumber, "bUseModelFileColours");
+    glUniform1f(UseModelFileColour_UL, (GLfloat)GL_TRUE);
 
 
     while ( ! glfwWindowShouldClose(window) )
@@ -478,6 +497,12 @@ int main(void)
         matView = glm::lookAt( ::g_cameraEye,
                                cameraTarget,
                                upVector);
+
+//        // uniform vec3 eyeLocation;
+//        GLint eyeLocation_UniformID = glGetUniformLocation(shaderProgramNumber, "eyeLocation");
+//        glUniform3f(eyeLocation_UniformID,
+//                    ::g_cameraEye.x, ::g_cameraEye.y, ::g_cameraEye.z);
+
 
 
 //        glUseProgram(program);
@@ -610,6 +635,13 @@ int main(void)
             << ::g_cameraEye.x << ", "
             << ::g_cameraEye.y << ", "
             << ::g_cameraEye.z;
+
+        ssTitle << " Light#0 XYZ: "
+            << pTheLightManager->theLights[0].position.x << ", "
+            << pTheLightManager->theLights[0].position.y << ", "
+            << pTheLightManager->theLights[0].position.z << "  "
+            << "Linear atten: " << pTheLightManager->theLights[0].atten.y
+            << " Quadratic atten: " << pTheLightManager->theLights[0].atten.z;
 //        glfwSetWindowTitle(window, "Hello!");
         glfwSetWindowTitle( window, ssTitle.str().c_str() );
 
