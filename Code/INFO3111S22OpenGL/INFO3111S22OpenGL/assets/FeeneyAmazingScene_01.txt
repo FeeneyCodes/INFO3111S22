@@ -1,10 +1,10 @@
 6
-assets/models/cow_xyz_n_rgba_uv.ply
-assets/models/bun_zipper.xyz_n_rgba_uv.ply
-assets/models/mig29_xyz_n_rgba_uv.ply
-assets/models/Seafloor2_xyz_n_rgba_uv.ply
-assets/models/Isoshphere_flat_4div_xyz_n_rgba_uv.ply
-assets/models/ssj100_xyz_n_rgba_uv.ply
+assets/models/atat_xyz_n_uv.ply
+assets/models/Isoshphere_InvertedNormals_xyz_n_uv.ply
+assets/models/Star_Wars_Snowspeeder_xyz_n_uv.ply
+assets/models/TearDropBullet_inverted_normals_xyz_n_uv.ply 
+assets/models/terrain_xyz_n_uv.ply
+assets/models/Isoshphere_InvertedNormals_xyz_n_uv
 2
 assets/models/cow_xyz_only.ply
 10.5  6.4  -141.5
